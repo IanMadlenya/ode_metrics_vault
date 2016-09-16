@@ -1,4 +1,57 @@
+/*
+
+	Create ODE_Metrics_Stage database first.
+	Populate ODE_Metrics_Stage with required objects using the Visual Studio Schema compare tool.
+	Execute the following code for your ODE_Config database.
+	Copy the output of the execution to the separate query window and execute it.
+
+*/
+
+
+IF (DB_ID(N'ODE_Metrics_Vault') IS NOT NULL) 
+BEGIN
+    ALTER DATABASE [ODE_Metrics_Vault]
+    SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE [ODE_Metrics_Vault];
+END
+GO
+CREATE DATABASE [ODE_Metrics_Vault] COLLATE SQL_Latin1_General_CP1_CI_AS
+GO
+
+USE [ODE_Metrics_Vault]
+GO
+
+CREATE SCHEMA [hub]
+AUTHORIZATION dbo
+GO
+
+CREATE SCHEMA [sat]
+AUTHORIZATION dbo
+GO
+
+CREATE SCHEMA [lnk]
+AUTHORIZATION dbo
+GO
+
+CREATE SCHEMA [RawHub]
+AUTHORIZATION dbo
+GO
+
+CREATE SCHEMA [RawSat]
+AUTHORIZATION dbo
+GO
+
+CREATE SCHEMA [RawLnk]
+AUTHORIZATION dbo
+GO
+
+
 USE [ODE_Config]
+GO
+
+SELECT SeverityId, SeverityName
+INTO ODE_Metrics_Stage.stage.log4_Severity
+FROM ODE_Config.log4.Severity
 GO
 
 SET IDENTITY_INSERT [dv_release].[dv_release_master] ON 
@@ -6,8 +59,7 @@ SET IDENTITY_INSERT [dv_release].[dv_release_master] ON
 GO
 INSERT [dv_release].[dv_release_master] ([release_key], [release_number], [release_description], [reference_number], [reference_source], [build_number], [build_date], [build_server], [release_built_by], [release_start_datetime], [release_complete_datetime], [release_count], [version_number], [updated_by], [updated_datetime]) VALUES (-1, 1, N'Metrics vault settings', N'N/A', N'N/A', 1, CAST(N'2016-09-09T03:45:11.0406345+00:00' AS DateTimeOffset), NULL, N'dbo', NULL, NULL, 0, 1, N'sa', CAST(N'2016-09-09T03:45:11.0436349+00:00' AS DateTimeOffset))
 GO
-INSERT [dv_release].[dv_release_master] ([release_key], [release_number], [release_description], [reference_number], [reference_source], [build_number], [build_date], [build_server], [release_built_by], [release_start_datetime], [release_complete_datetime], [release_count], [version_number], [updated_by], [updated_datetime]) VALUES (0, 0, N'<N/A>', N'<N/A>', N'<N/A>', 0, NULL, NULL, NULL, NULL, NULL, 0, 1, N'sa', CAST(N'2016-08-25T21:20:38.1749573+00:00' AS DateTimeOffset))
-GO
+
 SET IDENTITY_INSERT [dv_release].[dv_release_master] OFF
 GO
 
@@ -1192,3 +1244,159 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 	;
 	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_satellite_column] OFF;', 317)
 GO
+
+---------------------------------------------------------------------------------------
+
+EXECUTE [dv_release].[dv_apply_release_config] 
+@vault_release_number  = 1
+GO
+
+---------------------------------------------------------------------------------------
+
+SET NOCOUNT ON;
+--********************************************************************************************************************************************************************
+declare @Rebuild char(3) = 'N'
+	   -- Be VERY careful - setting this parameter to "Yes" will generate statements, which may cause data loss.
+	   -- Setting @Rebuild to "Yes" and @ReleaseNumber to -1 will generate statements to Rebuild ALL of your Vault Objects!!!.
+
+	   -- "N" will generate statements to Create Objects, which do not already exist in the Vault. 
+	   -- "Yes" will generate statements to recreate existing Objects plus create all missing Objects.
+       --
+--********************************************************************************************************************************************************************
+-- Working Storage
+declare @ReleaseKey int
+set @ReleaseKey = -1
+
+if @Rebuild = 'Yes'
+begin
+    PRINT '-------------------------------------------------------------------------------------------'; 
+	PRINT '--You have selected to generate statements which will Rebuild all or part of your Vault';
+	PRINT '--This could cause data loss by recreating existing Hubs Links and Satellites.';
+	PRINT '--Is this what you require?';
+	PRINT '-------------------------------------------------------------------------------------------'; 
+	PRINT ' ';
+end
+PRINT '------------------';
+PRINT '--Build Hub Tables';
+PRINT '------------------';
+DECLARE @SQL NVARCHAR(MAX)
+, @SQLOUT NVARCHAR(1000)
+, @ParmDefinition NVARCHAR(500);
+SET @ParmDefinition = N'@SQLOutVal NVARCHAR(1000) OUTPUT';
+DECLARE hub_cursor CURSOR
+FOR SELECT 
+case when @Rebuild = 'Yes' then 
+'select @SQLOutVal = ''EXECUTE [dbo].[dv_create_hub_table] '''''+[hub_database]+''''','''''+[hub_name]+''''',''''N''''''
+where not exists (select 1 from '+QUOTENAME([hub_database])+'.[information_schema].[tables] where table_name = ''' + [dbo].[fn_get_object_name]
+([hub_name], 'Hub'
+)+''')' +
+'select @SQLOutVal = ''EXECUTE [dbo].[dv_create_hub_table] '''''+[hub_database]+''''','''''+[hub_name]+''''',''''Y''''''
+where exists (select 1 from '+QUOTENAME([hub_database])+'.[information_schema].[tables] where table_name = ''' + [dbo].[fn_get_object_name]
+([hub_name], 'Hub'
+)+''')' 
+else 
+'select @SQLOutVal = ''EXECUTE [dbo].[dv_create_hub_table] '''''+[hub_database]+''''','''''+[hub_name]+''''',''''N''''''
+where not exists (select 1 from '+QUOTENAME([hub_database])+'.[information_schema].[tables] where table_name = ''' + [dbo].[fn_get_object_name]
+([hub_name], 'Hub'
+)+''')'
+end
+FROM [dbo].[dv_hub]
+WHERE ([hub_key] > 0 OR [hub_key] < -100)
+and [release_key] = @ReleaseKey;
+OPEN hub_cursor;
+FETCH NEXT FROM hub_cursor INTO @SQL;
+WHILE @@Fetch_Status = 0
+BEGIN
+SET @SQLOUT = NULL;
+EXEC [sp_executesql]
+@SQL
+, @ParmDefinition
+, @SQLOutVal = @SQLOUT OUTPUT;
+IF @SQLOUT IS NOT NULL
+PRINT @SQLOUT;
+FETCH NEXT FROM hub_cursor INTO @SQL;
+END;
+CLOSE hub_cursor;
+DEALLOCATE hub_cursor;
+PRINT '';
+PRINT '-------------------';
+PRINT '--Build Link Tables';
+PRINT '-------------------';
+DECLARE link_cursor CURSOR
+FOR SELECT 
+case when @Rebuild = 'Yes' then 
+'select @SQLOutVal = ''EXECUTE [dbo].[dv_create_link_table] '''''+[link_database]+''''','''''+[link_name]+''''',''''N''''''
+where not exists (select 1 from '+QUOTENAME([link_database])+'.[information_schema].[tables] where table_name = ''' + [dbo].[fn_get_object_name]
+([link_name], 'Lnk'
+)+''')' +
+'select @SQLOutVal = ''EXECUTE [dbo].[dv_create_link_table] '''''+[link_database]+''''','''''+[link_name]+''''',''''Y''''''
+where  exists (select 1 from '+QUOTENAME([link_database])+'.[information_schema].[tables] where table_name = ''' + [dbo].[fn_get_object_name]
+([link_name], 'Lnk'
+)+''')'
+else
+'select @SQLOutVal = ''EXECUTE [dbo].[dv_create_link_table] '''''+[link_database]+''''','''''+[link_name]+''''',''''N''''''
+where not exists (select 1 from '+QUOTENAME([link_database])+'.[information_schema].[tables] where table_name = ''' + [dbo].[fn_get_object_name]
+([link_name], 'Lnk'
+)+''')'
+end
+FROM
+[dbo].[dv_link]
+WHERE ([link_key] > 0 OR [link_key] < -100)
+and [release_key] = @ReleaseKey;
+OPEN link_cursor;
+FETCH NEXT FROM link_cursor INTO @SQL;
+WHILE @@Fetch_Status = 0
+BEGIN
+SET @SQLOUT = NULL;
+EXEC [sp_executesql]
+@SQL
+, @ParmDefinition
+, @SQLOutVal = @SQLOUT OUTPUT;
+IF @SQLOUT IS NOT NULL
+PRINT @SQLOUT;
+FETCH NEXT FROM link_cursor INTO @SQL;
+END;
+CLOSE link_cursor;
+DEALLOCATE link_cursor;
+PRINT '';
+PRINT '------------------';
+PRINT '--Build Sat Tables';
+PRINT '------------------';
+DECLARE sat_cursor CURSOR
+FOR SELECT 
+case when @Rebuild = 'Yes' then
+'select @SQLOutVal = ''EXECUTE [dbo].[dv_create_sat_table] '''''+[satellite_database]+''''','''''+[satellite_name]+''''',''''N''''''
+where not exists (select 1 from '+QUOTENAME([satellite_database])+'.[information_schema].[tables] where table_name = ''' + [dbo].[fn_get_object_name]
+([satellite_name], 'Sat'
+)+''')'+
+'select @SQLOutVal = ''EXECUTE [dbo].[dv_create_sat_table] '''''+[satellite_database]+''''','''''+[satellite_name]+''''',''''Y''''''
+where exists (select 1 from '+QUOTENAME([satellite_database])+'.[information_schema].[tables] where table_name = ''' + [dbo].[fn_get_object_name]
+([satellite_name], 'Sat'
+)+''')'
+else  
+'select @SQLOutVal = ''EXECUTE [dbo].[dv_create_sat_table] '''''+[satellite_database]+''''','''''+[satellite_name]+''''',''''N''''''
+where not exists (select 1 from '+QUOTENAME([satellite_database])+'.[information_schema].[tables] where table_name = ''' + [dbo].[fn_get_object_name]
+([satellite_name], 'Sat'
+)+''')'
+end
+FROM
+[dbo].[dv_satellite]
+WHERE ([satellite_key] > 0 OR [satellite_key] < -100)
+and [release_key] = @ReleaseKey;
+OPEN sat_cursor;
+FETCH NEXT FROM sat_cursor INTO @SQL;
+WHILE @@Fetch_Status = 0
+BEGIN
+SET @SQLOUT = NULL;
+EXEC [sp_executesql]
+@SQL
+, @ParmDefinition
+, @SQLOutVal = @SQLOUT OUTPUT;
+IF @SQLOUT IS NOT NULL
+PRINT @SQLOUT;
+FETCH NEXT FROM sat_cursor INTO @SQL;
+END;
+CLOSE sat_cursor;
+DEALLOCATE sat_cursor;
+
+---------------------------------------------------------------------------------------
