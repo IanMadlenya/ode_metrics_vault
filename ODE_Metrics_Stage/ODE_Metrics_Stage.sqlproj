@@ -130,5 +130,13 @@
     <Build Include="stage\Stored Procedures\usp_DV_Link.sql" />
     <Build Include="stage\Stored Procedures\usp_DV_Hub.sql" />
     <Build Include="Security\stage.sql" />
+    <Build Include="stage\Tables\log4_Severity.sql" />
+    <Build Include="stage\Tables\Link_Run_Manifest.sql" />
+    <Build Include="stage\Tables\Link_Manifest_Source.sql" />
+    <Build Include="stage\Tables\Link_Link_Satellite.sql" />
+    <Build Include="stage\Tables\Link_Hub_Satellite.sql" />
+    <Build Include="stage\Tables\Link_Hub_Link_Column.sql" />
+    <Build Include="stage\Tables\Link_Hub_Column_Key.sql" />
+    <Build Include="stage\Tables\Link_Column_Source.sql" />
   </ItemGroup>
 </Project>

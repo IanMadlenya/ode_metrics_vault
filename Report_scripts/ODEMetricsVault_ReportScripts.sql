@@ -13,7 +13,7 @@ AS
 WITH hStable	AS (SELECT * FROM [ODE_Metrics_Vault].[hub].[h_DV_Source_Table])
 ,sStable		AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_DV_Source_Table] WHERE [dv_row_is_current] = 1 AND [dv_is_tombstone] = 0)
 ,hColumn		AS (SELECT * FROM [ODE_Metrics_Vault].[hub].[h_DV_Column])
-,sColumn		AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_DV_Column] WHERE [dv_row_is_current] = 1 AND [dv_is_tombstone] = 0)
+,sColumn		AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_DV_Column] WHERE [dv_row_is_current] = 1 AND [dv_is_tombstone] = 0  AND release_number != 1)
 ,sDDColumn		AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_Column_DataDictionary] WHERE [dv_row_is_current] = 1 AND [dv_is_tombstone] = 0)
 ,lTable_col		AS (SELECT l.* FROM [ODE_Metrics_Vault].[lnk].[l_Column_Source] l 
 					JOIN [ODE_Metrics_Vault].[sat].[s_Link_Column_Source] s
@@ -69,7 +69,7 @@ CREATE VIEW [dbo].[vw_DD_Links]
 AS
 
 WITH hLink	AS (SELECT * FROM [ODE_Metrics_Vault].[hub].[h_DV_Link])
-,sLink		AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_DV_Link]  WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0)
+,sLink		AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_DV_Link]  WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0 and release_number != 1)
 ,sLinkInt	AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_Link_Integrity] WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0)
 ,sDDLink	AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_Link_DataDictionary] WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0)
 ,hRank		AS (SELECT h_DV_Link_key, h.h_DV_Hub_key, h.[hub_name], i.[TotalRowCount],
@@ -97,6 +97,8 @@ SELECT hLink.link_key	AS LinkKey
 , h4.hub_name			AS Hub4Name
 , h4.TotalRowCount		AS Hub4RowCount
 FROM hLink
+JOIN sLink
+	ON hLink.h_DV_Link_key = sLink.h_DV_Link_key
 LEFT JOIN hRank h1
 	ON hLink.h_DV_Link_key = h1.h_DV_Link_key
 	AND h1.RankRank = 1
@@ -109,8 +111,6 @@ LEFT JOIN hRank h3
 LEFT JOIN hRank h4
 	ON hLink.h_DV_Link_key = h3.h_DV_Link_key
 	AND h2.RankRank = 4
-LEFT JOIN sLink
-	ON hLink.h_DV_Link_key = sLink.h_DV_Link_key
 LEFT JOIN sLinkInt
 	ON hLink.h_DV_Link_key = sLinkInt.h_DV_Link_key
 LEFT JOIN sDDLink
@@ -129,7 +129,7 @@ CREATE VIEW [dbo].[vw_DD_Table]
 AS
 
 WITH hStable	AS (SELECT * FROM [ODE_Metrics_Vault].[hub].[h_DV_Source_Table])
-,sStable		AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_DV_Source_Table] WHERE [dv_row_is_current] = 1 AND [dv_is_tombstone] = 0)
+,sStable		AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_DV_Source_Table] WHERE [dv_row_is_current] = 1 AND [dv_is_tombstone] = 0 and release_number != 1)
 ,sDDStable		AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_SourceTable_DataDictionary] WHERE [dv_row_is_current] = 1 AND [dv_is_tombstone] = 0)
 ,hHub			AS (SELECT * FROM [ODE_Metrics_Vault].[hub].[h_DV_Hub])
 ,sHub			AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_DV_Hub] WHERE [dv_row_is_current] = 1 AND [dv_is_tombstone] = 0)
@@ -173,6 +173,7 @@ SELECT DISTINCT
 , sSatInt.VersionedRowCount		AS SatelliteVersionedRowCount
 , sSatInt.TombstoneRowCount		AS SatelliteTombstoneRowCount
 FROM hStable
+INNER JOIN sStable			ON sStable.h_DV_Source_Table_key = hStable.h_DV_Source_Table_key
 LEFT JOIN lColumn_Source	ON lColumn_Source.h_DV_Source_Table_key = hStable.h_DV_Source_Table_key
 LEFT JOIN hDV_Column		ON hDV_Column.h_DV_Column_key = lColumn_Source.h_DV_Column_key
 INNER JOIN lSat_Column		ON lSat_Column.h_DV_Column_key = hDV_Column.h_DV_Column_key
@@ -182,7 +183,6 @@ LEFT JOIN hHub				ON hHub.h_DV_Hub_key = lHub_Sat.h_DV_Hub_key
 LEFT JOIN sDDStable			ON sDDStable.h_DV_Source_Table_key = hStable.h_DV_Source_Table_key
 LEFT JOIN sSatDD			ON sSatDD.h_DV_Satellite_key = hSat.h_DV_Satellite_key
 LEFT JOIN sDDHub			ON sDDHub.h_DV_Hub_key = hHub.h_DV_Hub_key
-LEFT JOIN sStable			ON sStable.h_DV_Source_Table_key = hStable.h_DV_Source_Table_key
 LEFT JOIN sSatellite		ON sSatellite.h_DV_Satellite_key = hSat.h_DV_Satellite_key
 LEFT JOIN sHub				ON sHub.h_DV_Hub_key = hHub.h_DV_Hub_key
 LEFT JOIN sHubInt			ON sHubInt.h_DV_Hub_key = hHub.h_DV_Hub_key
@@ -326,7 +326,7 @@ AS
 
 WITH hSat		AS (SELECT *	FROM [ODE_Metrics_Vault].[hub].[h_DV_Satellite])
 ,hColumn		AS (SELECT *	FROM [ODE_Metrics_Vault].[Hub].[h_DV_Column])
-,sSat			AS (SELECT *	FROM [ODE_Metrics_Vault].[sat].[s_DV_Satellite] WHERE dv_row_is_current = 1 AND dv_is_tombstone = 0)
+,sSat			AS (SELECT *	FROM [ODE_Metrics_Vault].[sat].[s_DV_Satellite] WHERE dv_row_is_current = 1 AND dv_is_tombstone = 0 AND release_number != 1)
 ,sColumn_Integrity AS (SELECT *	FROM [ODE_Metrics_Vault].[Sat].[s_Column_Integrity] WHERE dv_row_is_current = 1 AND dv_is_tombstone = 0)
 , lSat_Column	AS (SELECT l.*	FROM [ODE_Metrics_Vault].[Lnk].[l_Satellite_Column] l
 					JOIN [ODE_Metrics_Vault].[Sat].[s_Link_Satellite_Column] s 
@@ -350,11 +350,11 @@ sSat.[satellite_name] AS SatelliteName
 , sColumn_Integrity.[MinValue]
 
 FROM hSat
+INNER JOIN sSat				ON sSat.h_DV_Satellite_key = hSat.h_DV_Satellite_key
 LEFT JOIN lSat_Column		ON lSat_Column.h_DV_Satellite_key = hSat.h_DV_Satellite_key
 LEFT JOIN hColumn			ON hColumn.h_DV_Column_key = lSat_Column.h_DV_Column_key
 LEFT JOIN sColumn_Integrity	ON sColumn_Integrity.h_DV_Column_key = hColumn.h_DV_Column_key
 LEFT JOIN sSatIntegrity		ON sSatIntegrity.h_DV_Satellite_key = hSat.h_DV_Satellite_key
-LEFT JOIN sSat				ON sSat.h_DV_Satellite_key = hSat.h_DV_Satellite_key
 LEFT JOIN sColumn			ON hColumn.h_DV_Column_key = sColumn.h_DV_Column_key
 
 

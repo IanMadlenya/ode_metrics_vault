@@ -46,6 +46,24 @@ AUTHORIZATION dbo
 GO
 
 
+IF (DB_ID(N'ODE_Metrics_Stage') IS NOT NULL) 
+BEGIN
+    ALTER DATABASE [ODE_Metrics_Stage]
+    SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE [ODE_Metrics_Stage];
+END
+GO
+CREATE DATABASE [ODE_Metrics_Stage] COLLATE SQL_Latin1_General_CP1_CI_AS
+GO
+
+USE [ODE_Metrics_Stage]
+GO
+
+CREATE SCHEMA [stage]
+AUTHORIZATION dbo
+GO
+
+
 USE [ODE_Config]
 GO
 
@@ -1255,7 +1273,7 @@ GO
 
 SET NOCOUNT ON;
 --********************************************************************************************************************************************************************
-declare @Rebuild char(3) = 'N'
+declare @Rebuild char(3) = 'Y'
 	   -- Be VERY careful - setting this parameter to "Yes" will generate statements, which may cause data loss.
 	   -- Setting @Rebuild to "Yes" and @ReleaseNumber to -1 will generate statements to Rebuild ALL of your Vault Objects!!!.
 
