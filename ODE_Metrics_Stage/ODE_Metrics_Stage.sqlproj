@@ -37,7 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>C:\Git\ode_metrics_vault\Config_release\</OutputPath>
     <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DebugSymbols>true</DebugSymbols>
@@ -47,6 +47,7 @@
     <DefineTrace>true</DefineTrace>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <SqlTargetName>Metrics_Stage_Release</SqlTargetName>
   </PropertyGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
@@ -138,5 +139,15 @@
     <Build Include="stage\Tables\Link_Hub_Link_Column.sql" />
     <Build Include="stage\Tables\Link_Hub_Column_Key.sql" />
     <Build Include="stage\Tables\Link_Column_Source.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="ODE_Config">
+      <DefaultValue>ODE_Config</DefaultValue>
+      <Value>$(SqlCmdVar__3)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="ODE_Metrics_Vault">
+      <DefaultValue>ODE_Metrics_Vault</DefaultValue>
+      <Value>$(SqlCmdVar__1)</Value>
+    </SqlCmdVariable>
   </ItemGroup>
 </Project>

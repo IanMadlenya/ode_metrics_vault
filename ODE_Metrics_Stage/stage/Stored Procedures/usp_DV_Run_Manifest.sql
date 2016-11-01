@@ -29,5 +29,5 @@ BEGIN
 		,[row_count]
 		,[session_id]
 	INTO [stage].[DV_Run_Manifest]
-	FROM [ODE_Config].[dv_scheduler].[dv_run_manifest]
+	FROM [$(ODE_Config)].[dv_scheduler].[dv_run_manifest]
 END

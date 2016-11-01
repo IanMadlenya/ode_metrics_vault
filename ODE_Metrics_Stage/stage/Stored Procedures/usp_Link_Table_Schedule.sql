@@ -14,7 +14,7 @@ BEGIN
 		,schedule_source_table_key as [schedule_table_key]
 		,[source_table_key]
 	INTO [stage].[Link_Table_Schedule]
-	FROM [ODE_Metrics_Vault].[RawSat].[s_DV_Schedule_Table]
+	FROM [$(ODE_Metrics_Vault)].[RawSat].[s_DV_Schedule_Table]
 	WHERE [dv_row_is_current] = 1
 	AND [dv_is_tombstone] = 0
 END

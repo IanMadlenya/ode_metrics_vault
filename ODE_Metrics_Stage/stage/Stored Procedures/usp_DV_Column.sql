@@ -31,7 +31,7 @@ BEGIN
 		,c.[updated_by]
 		,c.[update_date_time]
 	INTO [stage].[DV_Column]
-	FROM [ODE_Config].[dbo].[dv_column] c
-	LEFT JOIN [ODE_Config].[dv_release].[dv_release_master] m
+	FROM [$(ODE_Config)].[dbo].[dv_column] c
+	LEFT JOIN [$(ODE_Config)].[dv_release].[dv_release_master] m
 	ON c.release_key = m.release_key
 END

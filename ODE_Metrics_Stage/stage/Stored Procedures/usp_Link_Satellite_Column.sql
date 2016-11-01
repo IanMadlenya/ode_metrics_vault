@@ -13,7 +13,7 @@ BEGIN
 		,satellite_key
 		,column_key
 	INTO [stage].[Link_Satellite_Column]
-	FROM [ODE_Metrics_Vault].[RawSat].[s_DV_Satellite_Column]
+	FROM [$(ODE_Metrics_Vault)].[RawSat].[s_DV_Satellite_Column]
 	WHERE [dv_row_is_current] = 1
 	AND [dv_is_tombstone] = 0
 END

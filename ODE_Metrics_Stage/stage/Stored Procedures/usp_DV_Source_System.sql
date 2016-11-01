@@ -20,7 +20,7 @@ BEGIN
 		,s.[updated_by]
 		,s.[update_date_time]
 	INTO [stage].[DV_Source_System]
-	FROM [ODE_Config].[dbo].[dv_source_system] s
-	LEFT JOIN [ODE_Config].[dv_release].[dv_release_master] m
+	FROM [$(ODE_Config)].[dbo].[dv_source_system] s
+	LEFT JOIN [$(ODE_Config)].[dv_release].[dv_release_master] m
 	ON s.release_key = m.release_key
 END
