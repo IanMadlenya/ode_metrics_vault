@@ -82,7 +82,6 @@
     <Build Include="stage\Tables\Link_DataDictionary.sql" />
     <Build Include="stage\Tables\Satellite_DataDictionary.sql" />
     <Build Include="stage\Tables\Hub_DataDictionary.sql" />
-    <Build Include="stage\Tables\Link_Satellite_Column.sql" />
     <Build Include="stage\Tables\Link_Table_Schedule.sql" />
     <Build Include="stage\Tables\Link_Journal_Exception.sql" />
     <Build Include="stage\Tables\DV_Source_Table.sql" />
@@ -107,7 +106,6 @@
     <Build Include="stage\Stored Procedures\usp_Link_Run_Manifest.sql" />
     <Build Include="stage\Stored Procedures\usp_Link_Manifest_Source.sql" />
     <Build Include="stage\Stored Procedures\usp_Link_Column_Source.sql" />
-    <Build Include="stage\Stored Procedures\usp_Link_Satellite_Column.sql" />
     <Build Include="stage\Stored Procedures\usp_Link_Link_Satellite.sql" />
     <Build Include="stage\Stored Procedures\usp_Link_Hub_Link_Column.sql" />
     <Build Include="stage\Stored Procedures\usp_Link_Hub_Column_Key.sql" />
@@ -139,6 +137,13 @@
     <Build Include="stage\Tables\Link_Hub_Link_Column.sql" />
     <Build Include="stage\Tables\Link_Hub_Column_Key.sql" />
     <Build Include="stage\Tables\Link_Column_Source.sql" />
+    <Build Include="stage\Stored Procedures\usp_log4_Severity.sql" />
+    <Build Include="stage\Tables\Link_Satellite_Column_Satellite.sql" />
+    <Build Include="stage\Tables\Link_Column_Satellite_Column.sql" />
+    <Build Include="stage\Stored Procedures\usp_Link_Satellite_Column_Satellite.sql" />
+    <Build Include="stage\Stored Procedures\usp_Link_Column_Satellite_Column.sql" />
+    <Build Include="stage\Tables\DV_Reference_Function.sql" />
+    <Build Include="stage\Stored Procedures\usp_DV_Reference_Function.sql" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="ODE_Config">
