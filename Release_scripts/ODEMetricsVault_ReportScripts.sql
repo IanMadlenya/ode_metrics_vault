@@ -1,11 +1,14 @@
-USE [ODE_Metrics_Vault]
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
+/*
+	ODE Metrics Vault aggregating views.
+	Use them to access the Metrics Vault data or create your own.
+*/
 
+------------------------------------------------------------------
+--Data dictionary for columns
+--Use this view to show and update the data dictionary.
+--Data dictionary information is not written directly to the Metrics Vault, 
+--   but it will be available after the next Metrics Vault schedule run
 
 CREATE VIEW [dbo].[vw_DD_Columns]
 AS
@@ -107,6 +110,11 @@ END
 
 GO
 
+------------------------------------------------------------------
+--Data dictionary for links
+--Use this view to show and update the data dictionary.
+--Data dictionary information is not written directly to the Metrics Vault, 
+--   but it will be available after the next Metrics Vault schedule run
 
 CREATE VIEW [dbo].[vw_DD_Links]
 AS
@@ -221,6 +229,11 @@ END
 
 GO
 
+------------------------------------------------------------------
+--Data dictionary for hubs, satellites and source tables description
+--Use this view to show and update the data dictionary.
+--Data dictionary information is not written directly to the Metrics Vault, 
+--   but it will be available after the next Metrics Vault schedule run
 
 CREATE VIEW [dbo].[vw_DD_Table]
 AS
@@ -389,6 +402,9 @@ DEALLOCATE curUpdate
 END
 GO
 
+------------------------------------------------------------------
+--This view shows the row number increase after the Data Vault schedule execution
+--Use this view to monitor the execution
 
 CREATE VIEW [dbo].[vw_Hub_Row_Increase]
 AS
@@ -409,6 +425,9 @@ AND NOT EXISTS (SELECT HubKey FROM [ODE_Metrics_Vault].[sat].[s_Hub_Integrity] s
 
 GO
 
+------------------------------------------------------------------
+--This view shows exeptions happened during the Data Vault scheduled execution
+--Use this view to monitor the execution
 
 CREATE view [dbo].[vw_Runtime_Exception]
 as
@@ -436,6 +455,9 @@ LEFT JOIN sSever ON sExc.ErrorSeverity = sSever.[SeverityId]
 
 GO
 
+------------------------------------------------------------------
+--This view shows the row number increase after the Data Vault schedule execution
+--Use this view to monitor the execution
 
   CREATE VIEW [dbo].[vw_Satellite_Row_Increase]
   AS
@@ -456,6 +478,9 @@ GO
 
 GO
 
+------------------------------------------------------------------
+--This view shows satellite columns stats
+--Use this view for data profiling or data reconciliation
 
 CREATE VIEW [dbo].[vw_Satellite_Stats]
 AS
