@@ -1,12 +1,9 @@
 ﻿/*
- Pre-Deployment Script Template							
+ Pre-Deployment Script 							
 --------------------------------------------------------------------------------------
- This file contains SQL statements that will be executed before the build script.	
- Use SQLCMD syntax to include a file in the pre-deployment script.			
- Example:      :r .\myfile.sql								
- Use SQLCMD syntax to reference a variable in the pre-deployment script.		
- Example:      :setvar TableName MyTable							
-               SELECT * FROM [$(TableName)]					
+ This file contains SQL statements that will be executed before the solution build script.	
+ These statements will configure ODE with the Metrics Vault objects and create them
+	before the Stage database is populated with the logic
 --------------------------------------------------------------------------------------
 */
 
@@ -65,6 +62,8 @@ GO
 
 SET IDENTITY_INSERT [dv_release].[dv_release_master] OFF
 GO
+
+--Insert data to the release build table
 
 INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 1, 1, N'Header', N'SET IDENTITY_INSERT [dv_release].[dv_release_master] ON; MERGE INTO [dv_release].[dv_release_master] AS trgt USING	(VALUES (-1,1,''Metrics vault settings'',''N/A'',''N/A'',4,''Nov  3 2016  1:04:06.4048139AM +00:00'',''ABC123'',''dbo'',''Nov  3 2016  1:04:06.4048139AM +00:00'')
 			) AS src([release_key],[release_number],[release_description],[reference_number],[reference_source],[build_number],[build_date],[build_server],[release_built_by],[updated_datetime])
@@ -1320,6 +1319,104 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 	;
 	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_hub_column] OFF;', 59)
 GO
+
+---------------------------------------------------------------------------------------
+--Apply release and populate config with Metrics Vault data
+
+EXECUTE [dv_release].[dv_apply_release_config] 
+@vault_release_number  = 1
+GO
+
+---------------------------------------------------------------------------------------
+--Build all tables in Metrics Vault
+
+------------------
+--Build Hub Tables
+------------------
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Reference_Function','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','Severity','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Journal','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Exception','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Schedule_Hierarchy','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Schedule_Table','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Schedule','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Source_System','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Satellite_Column','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Hub_Link','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Hub_Column','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Hub_Key','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Run_Manifest','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Schedule_Run','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Column','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Source_Table','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Release','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Satellite','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Link','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Hub','N'
+ 
+-------------------
+--Build Link Tables
+-------------------
+EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Satellite_Column_Function','N'
+EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Satellite_Column_Satellite','N'
+EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Column_Satellite_Column','N'
+EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Journal_Exception','N'
+EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Table_Schedule','N'
+EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Run_Manifest','N'
+EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Manifest_Source','N'
+EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Column_Source','N'
+EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Link_Satellite','N'
+EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Hub_Link_Column','N'
+EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Hub_Column_Key','N'
+EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Hub_Satellite','N'
+ 
+------------------
+--Build Sat Tables
+------------------
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Satellite_Column_Function','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Reference_Function','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Satellite_Column_Satellite','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Column_Satellite_Column','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Source_Table','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','SourceTable_DataDictionary','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','HubKey_DataDictionary','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Column_DataDictionary','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_DataDictionary','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Satellite_DataDictionary','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Hub_DataDictionary','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Hub_Satellite','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Satellite_Column_Integrity','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Hub_Integrity','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Integrity','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Satellite_Integrity','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Journal_Exception','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Table_Schedule','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Run_Manifest','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Manifest_Source','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Column_Source','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Link_Satellite','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Hub_Link_Column','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Hub_Column_Key','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','log4_Severity','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Journal','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Exception','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Schedule_Hierarchy','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Schedule_Table','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Schedule','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Source_System','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Satellite_Column','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Hub_Link','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Hub_Column','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Hub_Key','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Run_Manifest','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Schedule_Run','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Column','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Source_Table_Raw','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Release','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Satellite','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Link','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Hub','N'
+---------------------------------------------------------------------------------------
 
 USE [$(DatabaseName)]
 GO
