@@ -123,15 +123,18 @@ WITH hLink	AS (SELECT * FROM [ODE_Metrics_Vault].[hub].[h_DV_Link])
 ,sLink		AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_DV_Link]  WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0)
 ,sLinkInt	AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_Link_Integrity] WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0)
 ,sDDLink	AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_Link_DataDictionary] WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0)
-,hRank		AS (SELECT h_DV_Link_key, h.h_DV_Hub_key, h.[hub_name], i.[TotalRowCount],
-					DENSE_RANK () OVER(ORDER BY h_DV_Link_key,l.h_DV_Hub_key ) AS RankRank
+,hRank		AS (
+SELECT DISTINCT h_DV_Link_key, h.h_DV_Hub_key, h.[hub_name], i.[TotalRowCount],
+					DENSE_RANK () OVER(PARTITION BY h_DV_Link_key ORDER BY h_DV_Link_key,l.h_DV_Hub_key ) AS RankRank
 				FROM [ODE_Metrics_Vault].[lnk].[l_Hub_Link_Column] l
 				JOIN [ODE_Metrics_Vault].[sat].[s_Link_Hub_Link_Column] s ON l.l_Hub_Link_Column_key = s.l_Hub_Link_Column_key
 				LEFT JOIN [ODE_Metrics_Vault].[sat].[s_DV_Hub] h  ON l.h_DV_Hub_key = h.h_DV_Hub_key
 				LEFT JOIN [ODE_Metrics_Vault].[sat].[s_Hub_Integrity] i ON l.h_DV_Hub_key = i.h_DV_Hub_key
 				WHERE s.dv_row_is_current = 1 AND s.dv_is_tombstone = 0
 					AND h.dv_row_is_current = 1 AND h.dv_is_tombstone = 0
-					AND i.dv_row_is_current = 1 AND i.dv_is_tombstone = 0)
+					AND ISNULL(i.dv_row_is_current,1) = 1 AND ISNULL(i.dv_is_tombstone,0) = 0
+					
+					)
 
 SELECT DISTINCT hLink.link_key	AS LinkKey
 , sLink.link_name		AS LinkName
@@ -147,6 +150,10 @@ SELECT DISTINCT hLink.link_key	AS LinkKey
 , h3.TotalRowCount		AS Hub3RowCount
 , h4.hub_name			AS Hub4Name
 , h4.TotalRowCount		AS Hub4RowCount
+, h5.hub_name			AS Hub5Name
+, h5.TotalRowCount		AS Hub5RowCount
+, h6.hub_name			AS Hub6Name
+, h6.TotalRowCount		AS Hub6RowCount
 FROM hLink
 LEFT JOIN hRank h1
 	ON hLink.h_DV_Link_key = h1.h_DV_Link_key
@@ -156,10 +163,16 @@ LEFT JOIN hRank h2
 	AND h2.RankRank = 2
 LEFT JOIN hRank h3
 	ON hLink.h_DV_Link_key = h3.h_DV_Link_key
-	AND h2.RankRank = 3
+	AND h3.RankRank = 3
 LEFT JOIN hRank h4
-	ON hLink.h_DV_Link_key = h3.h_DV_Link_key
-	AND h2.RankRank = 4
+	ON hLink.h_DV_Link_key = h4.h_DV_Link_key
+	AND h4.RankRank = 4
+LEFT JOIN hRank h5
+	ON hLink.h_DV_Link_key = h5.h_DV_Link_key
+	AND h5.RankRank = 5
+LEFT JOIN hRank h6
+	ON hLink.h_DV_Link_key = h6.h_DV_Link_key
+	AND h6.RankRank = 6
 LEFT JOIN sLink
 	ON hLink.h_DV_Link_key = sLink.h_DV_Link_key
 LEFT JOIN sLinkInt
