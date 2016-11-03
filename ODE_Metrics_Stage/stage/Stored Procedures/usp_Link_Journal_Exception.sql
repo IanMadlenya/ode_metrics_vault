@@ -14,7 +14,7 @@ BEGIN
 		,ExceptionId
 		,JournalId
 	INTO [stage].[Link_Journal_Exception]
-	FROM [$(ODE_Metrics_Vault)].[RawSat].[s_DV_Journal]
+	FROM [ODE_Metrics_Vault].[RawSat].[s_DV_Journal]
 	WHERE [dv_row_is_current] = 1
 	AND [dv_is_tombstone] = 0
 	AND ExceptionId IS NOT NULL

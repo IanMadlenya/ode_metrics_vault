@@ -9,8 +9,11 @@
     [domain_count] BIGINT        NULL,
     [null_count]   BIGINT        NULL,
     [blank_count]  BIGINT        NULL,
-    [minlength]    BIGINT        NULL
+    [minlength]    BIGINT        NULL,
+    [maxlength]    BIGINT        NULL
 );
+
+
 
 
 

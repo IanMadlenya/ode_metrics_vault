@@ -18,6 +18,6 @@ BEGIN
 		,s.[SeverityId]
 		,s.[SeverityName]
 	INTO [stage].[log4_Severity]
-	FROM [ODE_Config].[log4].[Severity] s
+	FROM [$(ODE_Config)].[log4].[Severity] s
 
 END

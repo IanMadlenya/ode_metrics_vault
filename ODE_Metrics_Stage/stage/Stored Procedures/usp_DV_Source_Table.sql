@@ -10,10 +10,10 @@ BEGIN
 				WHERE TABLE_SCHEMA = 'stage' AND TABLE_NAME = 'DV_Source_Table'))
 	DROP TABLE stage.DV_Source_Table;
 
-;WITH hSTable	AS (SELECT * FROM [$(ODE_Metrics_Vault)].hub.h_DV_Source_Table)
-,hSSys			AS (SELECT * FROM [$(ODE_Metrics_Vault)].RawHub.h_DV_Source_System)
-,sSTable		AS (SELECT * FROM [$(ODE_Metrics_Vault)].RawSat.s_DV_Source_Table_Raw WHERE [dv_row_is_current] = 1 AND [dv_is_tombstone] = 0)
-,sSSys			AS (SELECT * FROM [$(ODE_Metrics_Vault)].RawSat.s_DV_Source_System WHERE [dv_row_is_current] = 1 AND [dv_is_tombstone] = 0)
+;WITH hSTable	AS (SELECT * FROM [ODE_Metrics_Vault].hub.h_DV_Source_Table)
+,hSSys			AS (SELECT * FROM [ODE_Metrics_Vault].RawHub.h_DV_Source_System)
+,sSTable		AS (SELECT * FROM [ODE_Metrics_Vault].RawSat.s_DV_Source_Table_Raw WHERE [dv_row_is_current] = 1 AND [dv_is_tombstone] = 0)
+,sSSys			AS (SELECT * FROM [ODE_Metrics_Vault].RawSat.s_DV_Source_System WHERE [dv_row_is_current] = 1 AND [dv_is_tombstone] = 0)
 
 	SELECT metrics_stage_run_time = SYSDATETIMEOFFSET()
 		,hSTable.[source_table_key]

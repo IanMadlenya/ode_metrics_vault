@@ -21,7 +21,7 @@ BEGIN
       ,f.[updated_by]
       ,f.[updated_datetime]
 	INTO [stage].[DV_Reference_Function]
-	FROM [ODE_Config].[dbo].[dv_ref_function] f
-	LEFT JOIN [ODE_Config].[dv_release].dv_release_master m
+	FROM [$(ODE_Config)].[dbo].[dv_ref_function] f
+	LEFT JOIN [$(ODE_Config)].[dv_release].dv_release_master m
 	ON f.release_key = m.release_key
 END

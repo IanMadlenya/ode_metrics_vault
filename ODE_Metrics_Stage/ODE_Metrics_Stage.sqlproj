@@ -144,15 +144,16 @@
     <Build Include="stage\Stored Procedures\usp_Link_Column_Satellite_Column.sql" />
     <Build Include="stage\Tables\DV_Reference_Function.sql" />
     <Build Include="stage\Stored Procedures\usp_DV_Reference_Function.sql" />
+    <Build Include="stage\Tables\Link_Satellite_Column_Function.sql" />
+    <Build Include="stage\Stored Procedures\usp_Link_Satellite_Column_Function.sql" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="ODE_Config">
       <DefaultValue>ODE_Config</DefaultValue>
       <Value>$(SqlCmdVar__3)</Value>
     </SqlCmdVariable>
-    <SqlCmdVariable Include="ODE_Metrics_Vault">
-      <DefaultValue>ODE_Metrics_Vault</DefaultValue>
-      <Value>$(SqlCmdVar__1)</Value>
-    </SqlCmdVariable>
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="Script.PreDeployment.MetricsVault.sql" />
   </ItemGroup>
 </Project>
