@@ -52,7 +52,7 @@ END
 GO
 PRINT N'Creating $(DatabaseName)...'
 GO
-CREATE DATABASE [$(DatabaseName)] COLLATE SQL_Latin1_General_CP1_CI_AS
+CREATE DATABASE [$(DatabaseName)] 
 GO
 IF EXISTS (SELECT 1
            FROM   [master].[dbo].[sysdatabases]
@@ -214,7 +214,7 @@ BEGIN
     DROP DATABASE [ODE_Metrics_Vault];
 END
 GO
-CREATE DATABASE [ODE_Metrics_Vault] COLLATE SQL_Latin1_General_CP1_CI_AS
+CREATE DATABASE [ODE_Metrics_Vault]
 GO
 
 USE [ODE_Metrics_Vault]
@@ -263,7 +263,7 @@ GO
 
 --Insert data to the release build table
 
-INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 1, 1, N'Header', N'SET IDENTITY_INSERT [dv_release].[dv_release_master] ON; MERGE INTO [dv_release].[dv_release_master] AS trgt USING	(VALUES (-1,1,''Metrics vault settings'',''N/A'',''N/A'',4,''Nov  3 2016  1:04:06.4048139AM +00:00'',''ABC123'',''dbo'',''Nov  3 2016  1:04:06.4048139AM +00:00'')
+INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 1, 1, N'Header', N'SET IDENTITY_INSERT [dv_release].[dv_release_master] ON; MERGE INTO [dv_release].[dv_release_master] AS trgt USING	(VALUES (-1,1,''Metrics vault settings'',''N/A'',''N/A'',6,''Nov  4 2016  1:24:01.1795827AM +00:00'',''WIN-PN7CBKHS7FP'',''dbo'',''Nov  4 2016  1:24:01.1795827AM +00:00'')
 			) AS src([release_key],[release_number],[release_description],[reference_number],[reference_source],[build_number],[build_date],[build_server],[release_built_by],[updated_datetime])
 	ON
 		trgt.[release_key] = src.[release_key]
@@ -493,7 +493,9 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 	;
 	 select @result = @@rowcount; SET IDENTITY_INSERT [dv_scheduler].[dv_schedule_source_table] OFF;', 42)
 GO
-INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 7, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_hub] ON; MERGE INTO [dbo].[dv_hub] AS trgt USING	(VALUES (-120,''DV_Reference_Function'',''h120'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Nov  2 2016  9:52:46.2856489PM +00:00''),
+INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 7, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_hub] ON; MERGE INTO [dbo].[dv_hub] AS trgt USING	(VALUES (-122,''Link_Source_Table'',''h122'',''hub'',''ODE_Metrics_Vault'',0,-1,''Nov  4 2016 12:48:52.1445818AM +00:00''),
+		(-121,''Hub_Source_Table'',''h121'',''hub'',''ODE_Metrics_Vault'',0,-1,''Nov  4 2016 12:32:15.3745828AM +00:00''),
+		(-120,''DV_Reference_Function'',''h120'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Nov  2 2016  9:52:46.2856489PM +00:00''),
 		(-119,''Severity'',''h119'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016 12:22:21.7737501AM +00:00''),
 		(-118,''DV_Journal'',''h118'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016 12:20:54.4319759AM +00:00''),
 		(-117,''DV_Exception'',''h117'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016 12:20:17.2609974AM +00:00''),
@@ -530,9 +532,13 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		VALUES ([hub_key],[hub_name],[hub_abbreviation],[hub_schema],[hub_database],[is_retired],[release_key],[updated_datetime])
 	
 	;
-	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_hub] OFF;', 20)
+	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_hub] OFF;', 22)
 GO
-INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 8, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_hub_key_column] ON; MERGE INTO [dbo].[dv_hub_key_column] AS trgt USING	(VALUES (-120,-120,''ref_function_key'',''varchar'',30,0,0,NULL,1,-1,''Nov  2 2016  9:59:28.4027823PM +00:00''),
+INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 8, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_hub_key_column] ON; MERGE INTO [dbo].[dv_hub_key_column] AS trgt USING	(VALUES (-124,-122,''source_table_key'',''int'',4,10,0,NULL,2,-1,''Nov  4 2016 12:49:49.0655809AM +00:00''),
+		(-123,-122,''link_key'',''int'',4,10,0,NULL,1,-1,''Nov  4 2016 12:49:26.7635804AM +00:00''),
+		(-122,-121,''source_table_key'',''int'',4,10,0,NULL,2,-1,''Nov  4 2016 12:33:53.9915788AM +00:00''),
+		(-121,-121,''hub_key'',''int'',4,10,0,NULL,1,-1,''Nov  4 2016 12:33:13.8895920AM +00:00''),
+		(-120,-120,''ref_function_key'',''varchar'',30,0,0,NULL,1,-1,''Nov  2 2016  9:59:28.4027823PM +00:00''),
 		(-119,-119,''SeverityID'',''int'',4,10,0,NULL,1,-1,''Nov  2 2016 10:03:55.9288120PM +00:00''),
 		(-118,-118,''JournalID'',''int'',4,10,0,NULL,1,-1,''Nov  2 2016 10:03:55.9288120PM +00:00''),
 		(-117,-117,''ExceptionID'',''int'',4,10,0,NULL,1,-1,''Nov  2 2016 10:03:55.9288120PM +00:00''),
@@ -572,7 +578,7 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		VALUES ([hub_key_column_key],[hub_key],[hub_key_column_name],[hub_key_column_type],[hub_key_column_length],[hub_key_column_precision],[hub_key_column_scale],[hub_key_Collation_Name],[hub_key_ordinal_position],[release_key],[updated_datetime])
 	
 	;
-	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_hub_key_column] OFF;', 20)
+	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_hub_key_column] OFF;', 24)
 GO
 INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 9, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_link] ON; MERGE INTO [dbo].[dv_link] AS trgt USING	(VALUES (-113,''Satellite_Column_Function'',''L113'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Nov  2 2016 10:31:30.9901891PM +00:00''),
 		(-112,''Satellite_Column_Satellite'',''L112'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Nov  2 2016  3:05:20.8460569AM +00:00''),
@@ -662,8 +668,8 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		(-134,-101,0,''H'',''Hub_DataDictionary'',''s154'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
 		(-133,0,-101,''L'',''Link_Hub_Satellite'',''s153'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
 		(-132,-112,0,''H'',''Satellite_Column_Integrity'',''s132'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  2 2016 11:06:27.0585481PM +00:00''),
-		(-131,-101,0,''H'',''Hub_Integrity'',''s131'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-130,-102,0,''H'',''Link_Integrity'',''s130'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
+		(-131,-121,0,''H'',''Hub_Integrity'',''s131'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016 12:37:43.2275914AM +00:00''),
+		(-130,-122,0,''H'',''Link_Integrity'',''s130'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016 12:54:31.0525830AM +00:00''),
 		(-129,-103,0,''H'',''Satellite_Integrity'',''s129'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
 		(-128,0,-110,''L'',''Link_Journal_Exception'',''s128'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
 		(-127,0,-109,''L'',''Link_Table_Schedule'',''s127'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
@@ -1442,7 +1448,11 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 	;
 	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_column] OFF;', 338)
 GO
-INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 14, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_hub_column] ON; MERGE INTO [dbo].[dv_hub_column] AS trgt USING	(VALUES (-162,-112,-1355,-1,''Nov  2 2016 10:27:30.3699103PM +00:00''),
+INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 14, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_hub_column] ON; MERGE INTO [dbo].[dv_hub_column] AS trgt USING	(VALUES (-166,-124,-276,-1,''Nov  4 2016 12:53:17.8185789AM +00:00''),
+		(-165,-123,-272,-1,''Nov  4 2016 12:52:55.7565786AM +00:00''),
+		(-164,-122,-283,-1,''Nov  4 2016 12:36:09.0475801AM +00:00''),
+		(-163,-121,-279,-1,''Nov  4 2016 12:35:48.9565781AM +00:00''),
+		(-162,-112,-1355,-1,''Nov  2 2016 10:27:30.3699103PM +00:00''),
 		(-161,-120,-1354,-1,''Nov  2 2016 10:27:30.3699103PM +00:00''),
 		(-160,-120,-1346,-1,''Nov  2 2016 10:27:30.3699103PM +00:00''),
 		(-159,-112,-1341,-1,''Nov  2 2016  3:28:58.6311143AM +00:00''),
@@ -1515,7 +1525,7 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		VALUES ([hub_col_key],[hub_key_column_key],[column_key],[release_key],[updated_datetime])
 	
 	;
-	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_hub_column] OFF;', 59)
+	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_hub_column] OFF;', 63)
 GO
 
 ---------------------------------------------------------------------------------------
@@ -1531,6 +1541,8 @@ GO
 ------------------
 --Build Hub Tables
 ------------------
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','Link_Source_Table','N'
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','Hub_Source_Table','N'
 EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Reference_Function','N'
 EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','Severity','N'
 EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Journal','N'

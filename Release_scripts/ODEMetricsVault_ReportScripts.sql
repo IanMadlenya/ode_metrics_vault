@@ -116,25 +116,25 @@ GO
 --Data dictionary information is not written directly to the Metrics Vault, 
 --   but it will be available after the next Metrics Vault schedule run
 
+
 CREATE VIEW [dbo].[vw_DD_Links]
 AS
 
 WITH hLink	AS (SELECT * FROM [ODE_Metrics_Vault].[hub].[h_DV_Link])
 ,sLink		AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_DV_Link]  WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0)
-,sLinkInt	AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_Link_Integrity] WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0)
+,sLinkInt	AS (SELECT LinkKey, SUM(TotalRowCount) AS TotalRowCount FROM [ODE_Metrics_Vault].[sat].[s_Link_Integrity] WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0
+				GROUP BY LinkKey)
 ,sDDLink	AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_Link_DataDictionary] WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0)
-,hRank		AS (
-SELECT DISTINCT h_DV_Link_key, h.h_DV_Hub_key, h.[hub_name], i.[TotalRowCount],
+,sHubInt	AS (SELECT HubKey, SUM(TotalRowCount) AS TotalRowCount FROM [ODE_Metrics_Vault].[sat].[s_Hub_Integrity] WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0
+				GROUP BY HubKey)
+,hRank		AS (SELECT distinct h_DV_Link_key, h.h_DV_Hub_key, h.[hub_name], i.[TotalRowCount],
 					DENSE_RANK () OVER(PARTITION BY h_DV_Link_key ORDER BY h_DV_Link_key,l.h_DV_Hub_key ) AS RankRank
 				FROM [ODE_Metrics_Vault].[lnk].[l_Hub_Link_Column] l
 				JOIN [ODE_Metrics_Vault].[sat].[s_Link_Hub_Link_Column] s ON l.l_Hub_Link_Column_key = s.l_Hub_Link_Column_key
 				LEFT JOIN [ODE_Metrics_Vault].[sat].[s_DV_Hub] h  ON l.h_DV_Hub_key = h.h_DV_Hub_key
-				LEFT JOIN [ODE_Metrics_Vault].[sat].[s_Hub_Integrity] i ON l.h_DV_Hub_key = i.h_DV_Hub_key
+				LEFT JOIN sHubInt i ON s.Hub_key = i.Hubkey
 				WHERE s.dv_row_is_current = 1 AND s.dv_is_tombstone = 0
-					AND h.dv_row_is_current = 1 AND h.dv_is_tombstone = 0
-					AND ISNULL(i.dv_row_is_current,1) = 1 AND ISNULL(i.dv_is_tombstone,0) = 0
-					
-					)
+					AND h.dv_row_is_current = 1 AND h.dv_is_tombstone = 0)
 
 SELECT DISTINCT hLink.link_key	AS LinkKey
 , sLink.link_name		AS LinkName
@@ -176,7 +176,7 @@ LEFT JOIN hRank h6
 LEFT JOIN sLink
 	ON hLink.h_DV_Link_key = sLink.h_DV_Link_key
 LEFT JOIN sLinkInt
-	ON hLink.h_DV_Link_key = sLinkInt.h_DV_Link_key
+	ON hLink.link_key = sLinkInt.LinkKey
 LEFT JOIN sDDLink
 	ON hLink.h_DV_Link_key = sDDLink.h_DV_Link_key
 
@@ -248,6 +248,7 @@ GO
 --Data dictionary information is not written directly to the Metrics Vault, 
 --   but it will be available after the next Metrics Vault schedule run
 
+
 CREATE VIEW [dbo].[vw_DD_Table]
 AS
 
@@ -274,7 +275,8 @@ WITH hStable	AS (SELECT * FROM [ODE_Metrics_Vault].[hub].[h_DV_Source_Table])
 					ON l.l_Hub_Satellite_key = s.l_Hub_Satellite_key WHERE s.dv_row_is_current = 1 AND s.dv_is_tombstone = 0)
 ,sSatDD			AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_Satellite_DataDictionary] WHERE dv_row_is_current = 1 AND dv_is_tombstone = 0)
 ,sSatellite		AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_DV_Satellite] WHERE dv_row_is_current = 1 AND dv_is_tombstone = 0)
-,sHubInt		AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_Hub_Integrity]  WHERE dv_row_is_current = 1 AND dv_is_tombstone = 0)
+,sHubInt		AS (SELECT HubKey, SUM(TotalRowCount) AS TotalRowCount FROM [ODE_Metrics_Vault].[sat].[s_Hub_Integrity]  WHERE dv_row_is_current = 1 AND dv_is_tombstone = 0
+					GROUP BY HubKey)
 ,sSatInt		AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_Satellite_Integrity]  WHERE dv_row_is_current = 1 AND dv_is_tombstone = 0)
 
 
@@ -313,7 +315,7 @@ LEFT JOIN sDDHub			ON sDDHub.h_DV_Hub_key = hHub.h_DV_Hub_key
 LEFT JOIN sStable			ON sStable.h_DV_Source_Table_key = hStable.h_DV_Source_Table_key
 LEFT JOIN sSatellite		ON sSatellite.h_DV_Satellite_key = hSat.h_DV_Satellite_key
 LEFT JOIN sHub				ON sHub.h_DV_Hub_key = hHub.h_DV_Hub_key
-LEFT JOIN sHubInt			ON sHubInt.h_DV_Hub_key = hHub.h_DV_Hub_key
+LEFT JOIN sHubInt			ON sHubInt.HubKey = hHub.hub_key
 LEFT JOIN sSatInt			ON sSatInt.h_DV_Satellite_key = hSat.h_DV_Satellite_key
 
 GO
@@ -419,6 +421,7 @@ GO
 --This view shows the row number increase after the Data Vault schedule execution
 --Use this view to monitor the execution
 
+
 CREATE VIEW [dbo].[vw_Hub_Row_Increase]
 AS
 SELECT curnt.RunDate
@@ -430,9 +433,11 @@ SELECT curnt.RunDate
 FROM [ODE_Metrics_Vault].[sat].[s_Hub_Integrity] curnt
 LEFT JOIN [ODE_Metrics_Vault].[sat].[s_Hub_Integrity] prev
 ON curnt.HubKey = prev.HubKey
+AND curnt.SourceTableKey = prev.SourceTableKey
 AND curnt.RunDate > prev.RunDate
 AND NOT EXISTS (SELECT HubKey FROM [ODE_Metrics_Vault].[sat].[s_Hub_Integrity] subQuer
 				WHERE subQuer.HubKey = curnt.HubKey 
+					AND subQuer.SourceTableKey = curnt.SourceTableKey 
 					AND curnt.RunDate > subQuer.RunDate
 					AND prev.RunDate < subQuer.RunDate)
 
