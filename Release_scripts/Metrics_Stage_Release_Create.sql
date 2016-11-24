@@ -52,7 +52,7 @@ END
 GO
 PRINT N'Creating $(DatabaseName)...'
 GO
-CREATE DATABASE [$(DatabaseName)] 
+CREATE DATABASE [$(DatabaseName)] COLLATE Latin1_General_CI_AS
 GO
 IF EXISTS (SELECT 1
            FROM   [master].[dbo].[sysdatabases]
@@ -263,7 +263,7 @@ GO
 
 --Insert data to the release build table
 
-INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 1, 1, N'Header', N'SET IDENTITY_INSERT [dv_release].[dv_release_master] ON; MERGE INTO [dv_release].[dv_release_master] AS trgt USING	(VALUES (-1,1,''Metrics vault settings'',''N/A'',''N/A'',6,''Nov  4 2016  1:24:01.1795827AM +00:00'',''WIN-PN7CBKHS7FP'',''dbo'',''Nov  4 2016  1:24:01.1795827AM +00:00'')
+INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 1, 1, N'Header', N'SET IDENTITY_INSERT [dv_release].[dv_release_master] ON; MERGE INTO [dv_release].[dv_release_master] AS trgt USING	(VALUES (-1,1,''Metrics vault settings'',''N/A'',''N/A'',9,''Nov 24 2016  9:59:38.0813818PM +00:00'',''WIN-PN7CBKHS7FP'',''dbo'',''Nov 24 2016  9:59:38.0813818PM +00:00'')
 			) AS src([release_key],[release_number],[release_description],[reference_number],[reference_source],[build_number],[build_date],[build_server],[release_built_by],[updated_datetime])
 	ON
 		trgt.[release_key] = src.[release_key]
@@ -302,7 +302,10 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 	;
 	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_source_system] OFF;', 1)
 GO
-INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 3, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_source_table] ON; MERGE INTO [dbo].[dv_source_table] AS trgt USING	(VALUES (-1038,-101,''Stage'',''Link_Satellite_Column_Function'',''Full'',''Stage'',''usp_Link_Satellite_Column_Function'',0,-1),
+INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 3, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_source_table] ON; MERGE INTO [dbo].[dv_source_table] AS trgt USING	(VALUES (-2041,-101,''stage'',''Link_Hub_Link_Column'',''Full'',''stage'',''usp_Link_Hub_Link_Column'',0,-1),
+		(-1041,-101,''stage'',''Link_Link_Key'',''Full'',''stage'',''usp_Link_Link_Key'',0,-1),
+		(-1040,-101,''stage'',''DV_Link_Key_Column'',''Full'',''stage'',''usp_DV_Link_Key_Column'',0,-1),
+		(-1038,-101,''Stage'',''Link_Satellite_Column_Function'',''Full'',''Stage'',''usp_Link_Satellite_Column_Function'',0,-1),
 		(-1037,-101,''Stage'',''DV_Reference_Function'',''Full'',''Stage'',''usp_DV_Reference_Function'',0,-1),
 		(-1036,-101,''stage'',''Link_Satellite_Column_Satellite'',''Full'',''stage'',''usp_Link_Satellite_Column_Satellite'',0,-1),
 		(-1035,-101,''stage'',''Link_Column_Satellite_Column'',''Full'',''stage'',''usp_Link_Column_Satellite_Column'',0,-1),
@@ -324,7 +327,6 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		(-125,-101,''stage'',''Link_Manifest_Source'',''Full'',''stage'',''usp_Link_Manifest_Source'',0,-1),
 		(-124,-101,''stage'',''Link_Column_Source'',''Full'',''stage'',''usp_Link_Column_Source'',0,-1),
 		(-122,-101,''stage'',''Link_Link_Satellite'',''Full'',''stage'',''usp_Link_Link_Satellite'',0,-1),
-		(-121,-101,''stage'',''Link_Hub_Link_Column'',''Full'',''stage'',''usp_Link_Hub_Link_Column'',0,-1),
 		(-120,-101,''stage'',''Link_Hub_Column_Key'',''Full'',''stage'',''usp_Link_Hub_Column_Key'',0,-1),
 		(-119,-101,''stage'',''Link_Hub_Satellite'',''Full'',''stage'',''usp_Link_Hub_Satellite'',0,-1),
 		(-118,-101,''stage'',''DV_Journal'',''Full'',''stage'',''usp_DV_Journal'',0,-1),
@@ -334,7 +336,6 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		(-114,-101,''stage'',''DV_Schedule'',''Full'',''stage'',''usp_DV_Schedule'',0,-1),
 		(-113,-101,''stage'',''DV_Source_System'',''Full'',''stage'',''usp_DV_Source_System'',0,-1),
 		(-112,-101,''stage'',''DV_Satellite_Column'',''Full'',''stage'',''usp_DV_Satellite_Column'',0,-1),
-		(-111,-101,''stage'',''DV_Hub_Link'',''Full'',''stage'',''usp_DV_Hub_Link'',0,-1),
 		(-110,-101,''stage'',''DV_Hub_Column'',''Full'',''stage'',''usp_DV_Hub_Column'',0,-1),
 		(-109,-101,''stage'',''DV_Hub_Key'',''Full'',''stage'',''usp_DV_Hub_Key'',0,-1),
 		(-108,-101,''stage'',''DV_Run_Manifest'',''Full'',''stage'',''usp_DV_Run_Manifest'',0,-1),
@@ -363,7 +364,7 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		VALUES ([source_table_key],[system_key],[source_table_schema],[source_table_name],[source_table_load_type],[source_procedure_schema],[source_procedure_name],[is_retired],[release_key])
 	
 	;
-	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_source_table] OFF;', 43)
+	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_source_table] OFF;', 44)
 GO
 INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 4, 1, N'Table', N'SET IDENTITY_INSERT [dv_scheduler].[dv_schedule] ON; MERGE INTO [dv_scheduler].[dv_schedule] AS trgt USING	(VALUES (-1,''Metrics_Vault'',''Intergity checks for the metrics vault'',''Daily'',0,-1,''Aug 29 2016  9:54:15.7453873PM +00:00'')
 			) AS src([schedule_key],[schedule_name],[schedule_description],[schedule_frequency],[is_cancelled],[release_key],[updated_datetime])
@@ -384,7 +385,8 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 	;
 	 select @result = @@rowcount; SET IDENTITY_INSERT [dv_scheduler].[dv_schedule] OFF;', 1)
 GO
-INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 5, 1, N'Table', N'SET IDENTITY_INSERT [dv_scheduler].[dv_source_table_hierarchy] ON; MERGE INTO [dv_scheduler].[dv_source_table_hierarchy] AS trgt USING	(VALUES (-1026,-1038,-112,0,-1),
+INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 5, 1, N'Table', N'SET IDENTITY_INSERT [dv_scheduler].[dv_source_table_hierarchy] ON; MERGE INTO [dv_scheduler].[dv_source_table_hierarchy] AS trgt USING	(VALUES (-1027,-2041,-110,0,-1),
+		(-1026,-1038,-112,0,-1),
 		(-1025,-1036,-112,0,-1),
 		(-1024,-1035,-106,0,-1),
 		(-1023,-1034,-113,0,-1),
@@ -403,13 +405,6 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		(-15,-128,-118,0,-1),
 		(-14,-130,-102,0,-1),
 		(-13,-119,-103,0,-1),
-		(-12,-121,-112,0,-1),
-		(-11,-121,-103,0,-1),
-		(-10,-121,-111,0,-1),
-		(-9,-121,-109,0,-1),
-		(-8,-121,-110,0,-1),
-		(-7,-120,-110,0,-1),
-		(-6,-120,-109,0,-1),
 		(-5,-124,-106,0,-1),
 		(-4,-131,-101,0,-1),
 		(-3,-112,-103,0,-1),
@@ -429,9 +424,12 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		VALUES ([source_table_hierarchy_key],[source_table_key],[prior_table_key],[is_cancelled],[release_key])
 	
 	;
-	 select @result = @@rowcount; SET IDENTITY_INSERT [dv_scheduler].[dv_source_table_hierarchy] OFF;', 31)
+	 select @result = @@rowcount; SET IDENTITY_INSERT [dv_scheduler].[dv_source_table_hierarchy] OFF;', 25)
 GO
-INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 6, 1, N'Table', N'SET IDENTITY_INSERT [dv_scheduler].[dv_schedule_source_table] ON; MERGE INTO [dv_scheduler].[dv_schedule_source_table] AS trgt USING	(VALUES (-1039,-1,-1038,''Full'',''Low'',''001'',0,-1,''Nov  2 2016 10:32:49.7542601PM +00:00''),
+INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 6, 1, N'Table', N'SET IDENTITY_INSERT [dv_scheduler].[dv_schedule_source_table] ON; MERGE INTO [dv_scheduler].[dv_schedule_source_table] AS trgt USING	(VALUES (-2041,-1,-2041,''Full'',''Low'',''001'',0,-1,''Nov 24 2016  8:41:43.0347177PM +00:00''),
+		(-1041,-1,-1041,''Full'',''Low'',''001'',0,-1,''Nov 24 2016  4:17:38.6667881AM +00:00''),
+		(-1040,-1,-1040,''Full'',''Low'',''001'',0,-1,''Nov 24 2016  3:29:54.6570505AM +00:00''),
+		(-1039,-1,-1038,''Full'',''Low'',''001'',0,-1,''Nov  2 2016 10:32:49.7542601PM +00:00''),
 		(-1038,-1,-1037,''Full'',''Low'',''001'',0,-1,''Nov  2 2016  9:58:24.6384406PM +00:00''),
 		(-1037,-1,-1036,''Full'',''Low'',''001'',0,-1,''Nov  2 2016  3:30:56.6431427AM +00:00''),
 		(-1036,-1,-1035,''Full'',''Low'',''001'',0,-1,''Nov  2 2016  3:30:44.1591296AM +00:00''),
@@ -452,8 +450,6 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		(-26,-1,-104,''Full'',''Low'',''001'',0,-1,''Sep  7 2016  2:34:49.1687075AM +00:00''),
 		(-25,-1,-130,''Full'',''Low'',''001'',0,-1,''Sep  7 2016  2:41:31.6282453AM +00:00''),
 		(-23,-1,-119,''Full'',''Low'',''001'',0,-1,''Sep  7 2016  2:39:39.5213827AM +00:00''),
-		(-22,-1,-121,''Full'',''Low'',''001'',0,-1,''Sep  7 2016  2:41:31.6282453AM +00:00''),
-		(-21,-1,-120,''Full'',''Low'',''001'',0,-1,''Sep  7 2016  2:41:31.6282453AM +00:00''),
 		(-20,-1,-124,''Full'',''Low'',''001'',0,-1,''Sep  7 2016  2:41:31.6282453AM +00:00''),
 		(-19,-1,-131,''Full'',''Low'',''001'',0,-1,''Sep  7 2016  2:41:31.6282453AM +00:00''),
 		(-18,-1,-105,''Full'',''Low'',''001'',0,-1,''Sep  7 2016  2:34:49.1687075AM +00:00''),
@@ -467,7 +463,6 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		(-9,-1,-108,''Full'',''Low'',''001'',0,-1,''Sep  7 2016  2:34:49.1687075AM +00:00''),
 		(-8,-1,-102,''Full'',''Low'',''001'',0,-1,''Sep  7 2016  2:34:49.1687075AM +00:00''),
 		(-7,-1,-118,''Full'',''Low'',''001'',0,-1,''Sep  7 2016  2:39:39.5213827AM +00:00''),
-		(-6,-1,-111,''Full'',''Low'',''001'',0,-1,''Sep  7 2016  2:39:39.5213827AM +00:00''),
 		(-5,-1,-110,''Full'',''Low'',''001'',0,-1,''Sep  7 2016  2:41:31.6282453AM +00:00''),
 		(-4,-1,-101,''Full'',''Low'',''001'',0,-1,''Sep  7 2016  2:34:49.1687075AM +00:00''),
 		(-3,-1,-117,''Full'',''Low'',''001'',0,-1,''Sep  7 2016  2:39:39.5213827AM +00:00''),
@@ -493,28 +488,28 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 	;
 	 select @result = @@rowcount; SET IDENTITY_INSERT [dv_scheduler].[dv_schedule_source_table] OFF;', 42)
 GO
-INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 7, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_hub] ON; MERGE INTO [dbo].[dv_hub] AS trgt USING	(VALUES (-122,''Link_Source_Table'',''h122'',''hub'',''ODE_Metrics_Vault'',0,-1,''Nov  4 2016 12:48:52.1445818AM +00:00''),
-		(-121,''Hub_Source_Table'',''h121'',''hub'',''ODE_Metrics_Vault'',0,-1,''Nov  4 2016 12:32:15.3745828AM +00:00''),
-		(-120,''DV_Reference_Function'',''h120'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Nov  2 2016  9:52:46.2856489PM +00:00''),
-		(-119,''Severity'',''h119'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016 12:22:21.7737501AM +00:00''),
-		(-118,''DV_Journal'',''h118'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016 12:20:54.4319759AM +00:00''),
-		(-117,''DV_Exception'',''h117'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016 12:20:17.2609974AM +00:00''),
-		(-116,''DV_Schedule_Hierarchy'',''h116'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016 12:19:39.9805802AM +00:00''),
-		(-115,''DV_Schedule_Table'',''h115'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016 12:19:00.2940035AM +00:00''),
-		(-114,''DV_Schedule'',''h114'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016 12:18:18.9980678AM +00:00''),
-		(-113,''DV_Source_System'',''h113'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016 12:17:34.1397171AM +00:00''),
-		(-112,''DV_Satellite_Column'',''h112'',''hub'',''ODE_Metrics_Vault'',0,-1,''Nov  2 2016  1:20:52.2239768AM +00:00''),
-		(-111,''DV_Hub_Link'',''h111'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016 12:15:25.1583345AM +00:00''),
-		(-110,''DV_Hub_Column'',''h110'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Sep  6 2016 11:48:57.1168092PM +00:00''),
-		(-109,''DV_Hub_Key'',''h109'',''hub'',''ODE_Metrics_Vault'',0,-1,''Sep  6 2016 11:46:46.4479326PM +00:00''),
-		(-108,''DV_Run_Manifest'',''h108'',''hub'',''ODE_Metrics_Vault'',0,-1,''Sep  6 2016 11:45:59.5115207PM +00:00''),
-		(-107,''DV_Schedule_Run'',''h107'',''hub'',''ODE_Metrics_Vault'',0,-1,''Sep  6 2016 11:45:09.8095424PM +00:00''),
-		(-106,''DV_Column'',''h106'',''hub'',''ODE_Metrics_Vault'',0,-1,''Sep  6 2016 11:44:24.2325358PM +00:00''),
-		(-105,''DV_Source_Table'',''h105'',''hub'',''ODE_Metrics_Vault'',0,-1,''Sep  6 2016 11:43:29.2806204PM +00:00''),
-		(-104,''DV_Release'',''h104'',''hub'',''ODE_Metrics_Vault'',0,-1,''Sep  6 2016 11:42:36.7662275PM +00:00''),
-		(-103,''DV_Satellite'',''h103'',''hub'',''ODE_Metrics_Vault'',0,-1,''Sep  6 2016 11:41:22.4085428PM +00:00''),
-		(-102,''DV_Link'',''h102'',''hub'',''ODE_Metrics_Vault'',0,-1,''Sep  6 2016 11:40:14.9257182PM +00:00''),
-		(-101,''DV_Hub'',''h101'',''hub'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016 12:24:07.9119653AM +00:00'')
+INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 7, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_hub] ON; MERGE INTO [dbo].[dv_hub] AS trgt USING	(VALUES (-124,''DV_Link_Key_Column'',''h123'',''hub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-122,''Link_Source_Table'',''h122'',''hub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-121,''Hub_Source_Table'',''h121'',''hub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-120,''DV_Reference_Function'',''h120'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-119,''Severity'',''h119'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-118,''DV_Journal'',''h118'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-117,''DV_Exception'',''h117'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-116,''DV_Schedule_Hierarchy'',''h116'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-115,''DV_Schedule_Table'',''h115'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-114,''DV_Schedule'',''h114'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-113,''DV_Source_System'',''h113'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-112,''DV_Satellite_Column'',''h112'',''hub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-110,''DV_Hub_Column'',''h110'',''RawHub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-109,''DV_Hub_Key'',''h109'',''hub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-108,''DV_Run_Manifest'',''h108'',''hub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-107,''DV_Schedule_Run'',''h107'',''hub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-106,''DV_Column'',''h106'',''hub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-105,''DV_Source_Table'',''h105'',''hub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-104,''DV_Release'',''h104'',''hub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-103,''DV_Satellite'',''h103'',''hub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-102,''DV_Link'',''h102'',''hub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00''),
+		(-101,''DV_Hub'',''h101'',''hub'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:26:29.8963404AM +00:00'')
 			) AS src([hub_key],[hub_name],[hub_abbreviation],[hub_schema],[hub_database],[is_retired],[release_key],[updated_datetime])
 	ON
 		trgt.[hub_key] = src.[hub_key]
@@ -534,7 +529,8 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 	;
 	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_hub] OFF;', 22)
 GO
-INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 8, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_hub_key_column] ON; MERGE INTO [dbo].[dv_hub_key_column] AS trgt USING	(VALUES (-124,-122,''source_table_key'',''int'',4,10,0,NULL,2,-1,''Nov  4 2016 12:49:49.0655809AM +00:00''),
+INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 8, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_hub_key_column] ON; MERGE INTO [dbo].[dv_hub_key_column] AS trgt USING	(VALUES (-126,-124,''link_key_column_key'',''int'',4,10,0,NULL,1,-1,''Nov 24 2016  3:09:25.6239458AM +00:00''),
+		(-124,-122,''source_table_key'',''int'',4,10,0,NULL,2,-1,''Nov  4 2016 12:49:49.0655809AM +00:00''),
 		(-123,-122,''link_key'',''int'',4,10,0,NULL,1,-1,''Nov  4 2016 12:49:26.7635804AM +00:00''),
 		(-122,-121,''source_table_key'',''int'',4,10,0,NULL,2,-1,''Nov  4 2016 12:33:53.9915788AM +00:00''),
 		(-121,-121,''hub_key'',''int'',4,10,0,NULL,1,-1,''Nov  4 2016 12:33:13.8895920AM +00:00''),
@@ -547,7 +543,6 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		(-114,-114,''schedule_key'',''int'',4,10,0,NULL,1,-1,''Nov  2 2016 10:03:55.9288120PM +00:00''),
 		(-113,-113,''source_system_key'',''int'',4,10,0,NULL,1,-1,''Nov  2 2016 10:03:55.9288120PM +00:00''),
 		(-112,-112,''satellite_col_key'',''int'',4,10,0,NULL,1,-1,''Nov  2 2016 10:03:55.9288120PM +00:00''),
-		(-111,-111,''hub_link_key'',''int'',4,10,0,NULL,1,-1,''Nov  2 2016 10:03:55.9288120PM +00:00''),
 		(-110,-110,''hub_column_key'',''int'',4,10,0,NULL,1,-1,''Nov  2 2016 10:03:55.9288120PM +00:00''),
 		(-109,-109,''hub_key_column_key'',''int'',4,10,0,NULL,1,-1,''Nov  2 2016 10:03:55.9288120PM +00:00''),
 		(-108,-108,''run_manifest_key'',''int'',4,10,0,NULL,1,-1,''Nov  2 2016 10:03:55.9288120PM +00:00''),
@@ -580,18 +575,19 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 	;
 	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_hub_key_column] OFF;', 24)
 GO
-INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 9, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_link] ON; MERGE INTO [dbo].[dv_link] AS trgt USING	(VALUES (-113,''Satellite_Column_Function'',''L113'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Nov  2 2016 10:31:30.9901891PM +00:00''),
-		(-112,''Satellite_Column_Satellite'',''L112'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Nov  2 2016  3:05:20.8460569AM +00:00''),
-		(-111,''Column_Satellite_Column'',''L111'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Nov  2 2016  3:04:36.5348976AM +00:00''),
-		(-110,''Journal_Exception'',''L110'',''RawLnk'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016  3:10:38.5097822AM +00:00''),
-		(-109,''Table_Schedule'',''L109'',''RawLnk'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016  3:10:38.5097822AM +00:00''),
-		(-108,''Run_Manifest'',''L108'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016  3:10:38.5097822AM +00:00''),
-		(-107,''Manifest_Source'',''L107'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016  3:10:38.5097822AM +00:00''),
-		(-106,''Column_Source'',''L106'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016  3:10:38.5097822AM +00:00''),
-		(-104,''Link_Satellite'',''L104'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016  3:10:38.5097822AM +00:00''),
-		(-103,''Hub_Link_Column'',''L103'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016  3:10:38.5097822AM +00:00''),
-		(-102,''Hub_Column_Key'',''L102'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016  3:10:38.5097822AM +00:00''),
-		(-101,''Hub_Satellite'',''L101'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Sep  7 2016  3:10:38.5097822AM +00:00'')
+INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 9, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_link] ON; MERGE INTO [dbo].[dv_link] AS trgt USING	(VALUES (-115,''Hub_Link_Column'',''l115'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  8:19:03.4461384PM +00:00''),
+		(-114,''Link_Key'',''l114'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  4:04:01.6238429AM +00:00''),
+		(-113,''Satellite_Column_Function'',''l113'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:30:45.0152053AM +00:00''),
+		(-112,''Satellite_Column_Satellite'',''l112'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:30:45.0152053AM +00:00''),
+		(-111,''Column_Satellite_Column'',''l111'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:30:45.0152053AM +00:00''),
+		(-110,''Journal_Exception'',''l110'',''RawLnk'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:30:45.0152053AM +00:00''),
+		(-109,''Table_Schedule'',''l109'',''RawLnk'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:30:45.0152053AM +00:00''),
+		(-108,''Run_Manifest'',''l108'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:30:45.0152053AM +00:00''),
+		(-107,''Manifest_Source'',''l107'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:30:45.0152053AM +00:00''),
+		(-106,''Column_Source'',''l106'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:30:45.0152053AM +00:00''),
+		(-104,''Link_Satellite'',''l104'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:30:45.0152053AM +00:00''),
+		(-102,''Hub_Column_Key'',''l102'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:30:45.0152053AM +00:00''),
+		(-101,''Hub_Satellite'',''l101'',''lnk'',''ODE_Metrics_Vault'',0,-1,''Nov 24 2016  3:30:45.0152053AM +00:00'')
 			) AS src([link_key],[link_name],[link_abbreviation],[link_schema],[link_database],[is_retired],[release_key],[updated_datetime])
 	ON
 		trgt.[link_key] = src.[link_key]
@@ -609,95 +605,97 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		VALUES ([link_key],[link_name],[link_abbreviation],[link_schema],[link_database],[is_retired],[release_key],[updated_datetime])
 	
 	;
-	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_link] OFF;', 12)
+	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_link] OFF;', 13)
 GO
-INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 10, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_hub_link] ON; MERGE INTO [dbo].[dv_hub_link] AS trgt USING	(VALUES (-130,-113,-112,-1,''Nov  2 2016 10:30:29.3351567PM +00:00''),
-		(-129,-113,-120,-1,''Nov  2 2016 10:30:29.3351567PM +00:00''),
-		(-128,-112,-103,-1,''Nov  2 2016  3:08:18.8093708AM +00:00''),
-		(-127,-112,-112,-1,''Nov  2 2016  3:08:05.3723157AM +00:00''),
-		(-126,-111,-112,-1,''Nov  2 2016  3:07:53.3882862AM +00:00''),
-		(-125,-111,-106,-1,''Nov  2 2016  3:07:38.2012635AM +00:00''),
-		(-124,-110,-118,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-123,-110,-117,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-122,-109,-115,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-121,-109,-114,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-120,-109,-105,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-119,-108,-107,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-118,-108,-108,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-117,-107,-108,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-116,-107,-105,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-115,-106,-105,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-114,-106,-106,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-111,-104,-103,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-110,-104,-102,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-109,-103,-102,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-108,-103,-106,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-107,-103,-109,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-106,-103,-101,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-105,-102,-106,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-104,-102,-109,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-103,-102,-101,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-102,-101,-103,-1,''Sep  7 2016  3:12:49.6161363AM +00:00''),
-		(-101,-101,-101,-1,''Sep  7 2016  3:12:49.6161363AM +00:00'')
-			) AS src([hub_link_key],[link_key],[hub_key],[release_key],[updated_datetime])
+INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 10, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_link_key_column] ON; MERGE INTO [dbo].[dv_link_key_column] AS trgt USING	(VALUES (-1132,-115,''DV_Hub_Key'',-1,''Nov 24 2016  9:24:03.2323117PM +00:00''),
+		(-1131,-115,''DV_Column'',-1,''Nov 24 2016  8:21:09.0365347PM +00:00''),
+		(-1130,-115,''DV_Link_Key_Column'',-1,''Nov 24 2016  8:20:58.9586501PM +00:00''),
+		(-131,-114,''DV_Link_Key_Column'',-1,''Nov 24 2016  4:07:06.5881535AM +00:00''),
+		(-130,-114,''DV_Link'',-1,''Nov 24 2016  4:06:54.7915468AM +00:00''),
+		(-129,-112,''DV_Satellite'',-1,''Nov 24 2016  3:43:44.1685515AM +00:00''),
+		(-128,-111,''DV_Column'',-1,''Nov 24 2016  3:41:34.0934840AM +00:00''),
+		(-127,-110,''DV_Exception'',-1,''Nov 24 2016  3:47:48.1158109AM +00:00''),
+		(-126,-109,''DV_Schedule'',-1,''Nov 24 2016  3:48:15.8338308AM +00:00''),
+		(-125,-109,''DV_Schedule_Table'',-1,''Nov 24 2016  3:48:23.8493109AM +00:00''),
+		(-124,-108,''DV_Run_Manifest'',-1,''Nov 24 2016  3:43:25.9970598AM +00:00''),
+		(-123,-107,''DV_Run_Manifest'',-1,''Nov 24 2016  3:43:32.7312999AM +00:00''),
+		(-122,-106,''DV_Column'',-1,''Nov 24 2016  3:41:57.2179526AM +00:00''),
+		(-121,-104,''DV_Link'',-1,''Nov 24 2016  3:43:09.4974763AM +00:00''),
+		(-117,-102,''DV_Hub'',-1,''Nov 24 2016  3:42:31.2483627AM +00:00''),
+		(-115,-102,''DV_Column'',-1,''Nov 24 2016  3:42:11.8738316AM +00:00''),
+		(-114,-101,''DV_Hub'',-1,''Nov 24 2016  3:42:37.8888653AM +00:00''),
+		(-113,-113,''DV_Reference_Function'',-1,''Nov 24 2016  3:48:05.6310236AM +00:00''),
+		(-112,-101,''DV_Satellite'',-1,''Nov 24 2016  3:43:57.0119590AM +00:00''),
+		(-111,-102,''DV_Hub_Key'',-1,''Nov 24 2016  3:42:58.4665001AM +00:00''),
+		(-109,-104,''DV_Satellite'',-1,''Nov 24 2016  3:43:50.5589809AM +00:00''),
+		(-108,-106,''DV_Source_Table'',-1,''Nov 24 2016  3:47:37.0379307AM +00:00''),
+		(-107,-107,''DV_Source_Table'',-1,''Nov 24 2016  3:47:30.2099765AM +00:00''),
+		(-106,-108,''DV_Schedule_Run'',-1,''Nov 24 2016  3:47:11.8041598AM +00:00''),
+		(-105,-109,''DV_Source_Table'',-1,''Nov 24 2016  3:47:24.0382745AM +00:00''),
+		(-104,-110,''DV_Journal'',-1,''Nov 24 2016  3:47:56.6312591AM +00:00''),
+		(-103,-111,''DV_Satellite_Column'',-1,''Nov 24 2016  3:46:56.7264308AM +00:00''),
+		(-102,-112,''DV_Satellite_Column'',-1,''Nov 24 2016  3:44:16.8239877AM +00:00''),
+		(-101,-113,''DV_Satellite_Column'',-1,''Nov 24 2016  3:44:08.1366706AM +00:00'')
+			) AS src([link_key_column_key],[link_key],[link_key_column_name],[release_key],[updated_datetime])
 	ON
-		trgt.[hub_link_key] = src.[hub_link_key]
+		trgt.[link_key_column_key] = src.[link_key_column_key]
 	WHEN MATCHED THEN
 		UPDATE SET
 			[link_key] = src.[link_key]
-		, [hub_key] = src.[hub_key]
+		, [link_key_column_name] = src.[link_key_column_name]
 		, [release_key] = src.[release_key]
 		, [updated_datetime] = src.[updated_datetime]
 	WHEN NOT MATCHED BY TARGET THEN
-		INSERT ([hub_link_key],[link_key],[hub_key],[release_key],[updated_datetime])
-		VALUES ([hub_link_key],[link_key],[hub_key],[release_key],[updated_datetime])
+		INSERT ([link_key_column_key],[link_key],[link_key_column_name],[release_key],[updated_datetime])
+		VALUES ([link_key_column_key],[link_key],[link_key_column_name],[release_key],[updated_datetime])
 	
 	;
-	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_hub_link] OFF;', 28)
+	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_link_key_column] OFF;', 29)
 GO
-INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 11, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_satellite] ON; MERGE INTO [dbo].[dv_satellite] AS trgt USING	(VALUES (-1039,0,-113,''L'',''Link_Satellite_Column_Function'',''s164'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  2 2016 10:32:16.3799242PM +00:00''),
-		(-1038,-120,0,''H'',''DV_Reference_Function'',''s163'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  2 2016  9:56:16.1253311PM +00:00''),
-		(-1037,0,-112,''L'',''Link_Satellite_Column_Satellite'',''S162'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  2 2016  3:11:32.5847573AM +00:00''),
-		(-1036,0,-111,''L'',''Link_Column_Satellite_Column'',''S161'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  2 2016  3:11:05.9605465AM +00:00''),
-		(-1035,-105,0,''H'',''DV_Source_Table'',''s160'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  9 2016  2:12:03.2336303AM +00:00''),
-		(-139,-105,0,''H'',''SourceTable_DataDictionary'',''s159'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-138,-109,0,''H'',''HubKey_DataDictionary'',''s158'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-137,-112,0,''H'',''Column_DataDictionary'',''s157'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  3 2016 12:07:18.1433841AM +00:00''),
-		(-136,-102,0,''H'',''Link_DataDictionary'',''s156'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-135,-103,0,''H'',''Satellite_DataDictionary'',''s155'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-134,-101,0,''H'',''Hub_DataDictionary'',''s154'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-133,0,-101,''L'',''Link_Hub_Satellite'',''s153'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-132,-112,0,''H'',''Satellite_Column_Integrity'',''s132'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  2 2016 11:06:27.0585481PM +00:00''),
-		(-131,-121,0,''H'',''Hub_Integrity'',''s131'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016 12:37:43.2275914AM +00:00''),
-		(-130,-122,0,''H'',''Link_Integrity'',''s130'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016 12:54:31.0525830AM +00:00''),
-		(-129,-103,0,''H'',''Satellite_Integrity'',''s129'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-128,0,-110,''L'',''Link_Journal_Exception'',''s128'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-127,0,-109,''L'',''Link_Table_Schedule'',''s127'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-126,0,-108,''L'',''Link_Run_Manifest'',''s126'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-125,0,-107,''L'',''Link_Manifest_Source'',''s125'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-124,0,-106,''L'',''Link_Column_Source'',''s124'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-122,0,-104,''L'',''Link_Link_Satellite'',''s122'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-121,0,-103,''L'',''Link_Hub_Link_Column'',''s121'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-120,0,-102,''L'',''Link_Hub_Column_Key'',''s120'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-119,-119,0,''H'',''log4_Severity'',''s139'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-118,-118,0,''H'',''DV_Journal'',''s118'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-117,-117,0,''H'',''DV_Exception'',''s117'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-116,-116,0,''H'',''DV_Schedule_Hierarchy'',''s116'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-115,-115,0,''H'',''DV_Schedule_Table'',''s115'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-114,-114,0,''H'',''DV_Schedule'',''s114'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-113,-113,0,''H'',''DV_Source_System'',''s113'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-112,-112,0,''H'',''DV_Satellite_Column'',''s112'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  2 2016  1:20:01.8817948AM +00:00''),
-		(-111,-111,0,''H'',''DV_Hub_Link'',''s111'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-110,-110,0,''H'',''DV_Hub_Column'',''s110'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  7 2016  3:24:42.3028503AM +00:00''),
-		(-109,-109,0,''H'',''DV_Hub_Key'',''s109'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  9 2016  1:52:18.8596479AM +00:00''),
-		(-108,-108,0,''H'',''DV_Run_Manifest'',''s108'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  9 2016  1:52:18.8596479AM +00:00''),
-		(-107,-107,0,''H'',''DV_Schedule_Run'',''s107'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  9 2016  1:52:18.8596479AM +00:00''),
-		(-106,-106,0,''H'',''DV_Column'',''s106'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  9 2016  1:52:18.8596479AM +00:00''),
-		(-105,-105,0,''H'',''DV_Source_Table_Raw'',''s105'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  9 2016  2:11:51.2596303AM +00:00''),
-		(-104,-104,0,''H'',''DV_Release'',''s104'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  9 2016  1:52:18.8596479AM +00:00''),
-		(-103,-103,0,''H'',''DV_Satellite'',''s103'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  9 2016  1:52:18.8596479AM +00:00''),
-		(-102,-102,0,''H'',''DV_Link'',''s102'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  9 2016  1:52:18.8596479AM +00:00''),
-		(-101,-101,0,''H'',''DV_Hub'',''s101'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Sep  9 2016  1:52:18.8596479AM +00:00'')
+INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 11, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_satellite] ON; MERGE INTO [dbo].[dv_satellite] AS trgt USING	(VALUES (-1043,0,-115,''L'',''Link_Hub_Link_Column'',''143s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov 24 2016  8:29:44.6945887PM +00:00''),
+		(-1042,0,-114,''L'',''Link_Link_Key'',''141s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov 24 2016  4:08:14.7115300AM +00:00''),
+		(-1041,-124,0,''H'',''DV_Link_Key_Column'',''140s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov 24 2016  3:11:58.3546579AM +00:00''),
+		(-1039,0,-113,''L'',''Link_Satellite_Column_Function'',''039s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-1038,-120,0,''H'',''DV_Reference_Function'',''038s'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-1037,0,-112,''L'',''Link_Satellite_Column_Satellite'',''037s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-1036,0,-111,''L'',''Link_Column_Satellite_Column'',''036s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-1035,-105,0,''H'',''DV_Source_Table'',''035s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-139,-105,0,''H'',''SourceTable_DataDictionary'',''139s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-138,-109,0,''H'',''HubKey_DataDictionary'',''138s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-137,-112,0,''H'',''Column_DataDictionary'',''137s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-136,-102,0,''H'',''Link_DataDictionary'',''136s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-135,-103,0,''H'',''Satellite_DataDictionary'',''135s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-134,-101,0,''H'',''Hub_DataDictionary'',''134s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-133,0,-101,''L'',''Link_Hub_Satellite'',''133s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-132,-112,0,''H'',''Satellite_Column_Integrity'',''132s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-131,-121,0,''H'',''Hub_Integrity'',''131s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-130,-122,0,''H'',''Link_Integrity'',''130s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-129,-103,0,''H'',''Satellite_Integrity'',''129s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-128,0,-110,''L'',''Link_Journal_Exception'',''128s'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-127,0,-109,''L'',''Link_Table_Schedule'',''127s'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-126,0,-108,''L'',''Link_Run_Manifest'',''126s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-125,0,-107,''L'',''Link_Manifest_Source'',''125s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-124,0,-106,''L'',''Link_Column_Source'',''124s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-122,0,-104,''L'',''Link_Link_Satellite'',''122s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-120,0,-102,''L'',''Link_Hub_Column_Key'',''120s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-119,-119,0,''H'',''log4_Severity'',''119s'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-118,-118,0,''H'',''DV_Journal'',''118s'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-117,-117,0,''H'',''DV_Exception'',''117s'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-116,-116,0,''H'',''DV_Schedule_Hierarchy'',''116s'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-115,-115,0,''H'',''DV_Schedule_Table'',''115s'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-114,-114,0,''H'',''DV_Schedule'',''114s'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-113,-113,0,''H'',''DV_Source_System'',''113s'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-112,-112,0,''H'',''DV_Satellite_Column'',''112s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-110,-110,0,''H'',''DV_Hub_Column'',''110s'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-109,-109,0,''H'',''DV_Hub_Key'',''109s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-108,-108,0,''H'',''DV_Run_Manifest'',''108s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-107,-107,0,''H'',''DV_Schedule_Run'',''107s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-106,-106,0,''H'',''DV_Column'',''106s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-105,-105,0,''H'',''DV_Source_Table_Raw'',''105s'',''RawSat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-104,-104,0,''H'',''DV_Release'',''104s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-103,-103,0,''H'',''DV_Satellite'',''103s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-102,-102,0,''H'',''DV_Link'',''102s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00''),
+		(-101,-101,0,''H'',''DV_Hub'',''101s'',''sat'',''ODE_Metrics_Vault'',0,0,0,-1,''Nov  4 2016  3:54:27.1172961AM +00:00'')
 			) AS src([satellite_key],[hub_key],[link_key],[link_hub_satellite_flag],[satellite_name],[satellite_abbreviation],[satellite_schema],[satellite_database],[duplicate_removal_threshold],[is_columnstore],[is_retired],[release_key],[updated_datetime])
 	ON
 		trgt.[satellite_key] = src.[satellite_key]
@@ -720,9 +718,22 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		VALUES ([satellite_key],[hub_key],[link_key],[link_hub_satellite_flag],[satellite_name],[satellite_abbreviation],[satellite_schema],[satellite_database],[duplicate_removal_threshold],[is_columnstore],[is_retired],[release_key],[updated_datetime])
 	
 	;
-	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_satellite] OFF;', 43)
+	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_satellite] OFF;', 44)
 GO
-INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 12, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_satellite_column] ON; MERGE INTO [dbo].[dv_satellite_column] AS trgt USING	(VALUES (-1335,-1039,''satellite_col_key'',''int'',4,10,0,NULL,3,NULL,NULL,0,-1,''Nov  2 2016 10:29:25.2739183PM +00:00''),
+INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 12, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_satellite_column] ON; MERGE INTO [dbo].[dv_satellite_column] AS trgt USING	(VALUES (-2355,-1043,''column_key'',''int'',4,10,0,NULL,3,NULL,NULL,0,-1,''Nov 24 2016  8:32:00.8159299PM +00:00''),
+		(-2354,-1043,''link_key_column_key'',''int'',4,10,0,NULL,2,NULL,NULL,0,-1,''Nov 24 2016  8:31:50.4880891PM +00:00''),
+		(-2353,-1043,''hub_key_column_key'',''int'',4,10,0,NULL,1,NULL,NULL,0,-1,''Nov 24 2016  8:31:37.9571580PM +00:00''),
+		(-1354,-1042,''link_key'',''varchar'',30,0,0,NULL,2,NULL,NULL,0,-1,''Nov 24 2016  4:10:29.9114220AM +00:00''),
+		(-1353,-1042,''link_key_column_key'',''varchar'',30,0,0,NULL,1,NULL,NULL,0,-1,''Nov 24 2016  4:09:25.6942328AM +00:00''),
+		(-1352,-1041,''updated_datetime'',''datetimeoffset'',10,34,7,NULL,7,NULL,NULL,0,-1,''Nov 24 2016  3:16:59.3943450AM +00:00''),
+		(-1351,-1041,''updated_by'',''varchar'',30,0,0,NULL,6,NULL,NULL,0,-1,''Nov 24 2016  3:15:47.4429263AM +00:00''),
+		(-1350,-1041,''version_number'',''int'',4,10,0,NULL,5,NULL,NULL,0,-1,''Nov 24 2016  3:15:24.3966031AM +00:00''),
+		(-1349,-1041,''release_key'',''int'',4,10,0,NULL,4,NULL,NULL,0,-1,''Nov 24 2016  3:15:09.5219796AM +00:00''),
+		(-1348,-1041,''link_key_column_name'',''varchar'',128,0,0,NULL,3,NULL,NULL,0,-1,''Nov 24 2016  3:14:38.9601594AM +00:00''),
+		(-1347,-1041,''link_key'',''int'',4,10,0,NULL,2,NULL,NULL,0,-1,''Nov 24 2016  3:13:59.3205111AM +00:00''),
+		(-1346,-1041,''link_key_column_key'',''int'',4,10,0,NULL,1,NULL,NULL,0,-1,''Nov 24 2016  3:13:33.4929950AM +00:00''),
+		(-1336,-110,''link_key_column_key'',''int'',4,10,0,NULL,10,NULL,NULL,0,-1,''Nov 24 2016  2:47:28.3585273AM +00:00''),
+		(-1335,-1039,''satellite_col_key'',''int'',4,10,0,NULL,3,NULL,NULL,0,-1,''Nov  2 2016 10:29:25.2739183PM +00:00''),
 		(-1334,-1039,''ref_function_key'',''int'',4,10,0,NULL,2,NULL,NULL,0,-1,''Nov  2 2016 10:29:25.2739183PM +00:00''),
 		(-1332,-1038,''version_number'',''int'',4,10,0,NULL,10,NULL,NULL,0,-1,''Nov  2 2016  9:57:36.7331249PM +00:00''),
 		(-1331,-1038,''updated_datetime'',''datetimeoffset'',10,34,7,NULL,9,NULL,NULL,0,-1,''Nov  2 2016  9:57:36.7331249PM +00:00''),
@@ -772,7 +783,6 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		(-1285,-116,''release_key'',''int'',4,10,0,NULL,10,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
 		(-1284,-114,''release_key'',''int'',4,10,0,NULL,11,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
 		(-1283,-112,''release_key'',''int'',4,10,0,NULL,9,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
-		(-1282,-111,''release_key'',''int'',4,10,0,NULL,9,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
 		(-1281,-110,''release_key'',''int'',4,10,0,NULL,9,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
 		(-1280,-102,''release_key'',''int'',4,10,0,NULL,12,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
 		(-1279,-109,''release_key'',''int'',4,10,0,NULL,15,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
@@ -842,10 +852,6 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		(-226,-124,''column_key'',''int'',4,10,0,NULL,1,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
 		(-223,-122,''satellite_key'',''int'',4,10,0,NULL,3,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
 		(-222,-122,''link_key'',''int'',4,10,0,NULL,1,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
-		(-221,-121,''link_key'',''int'',4,10,0,NULL,4,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
-		(-220,-121,''hub_key_column_key'',''int'',4,10,0,NULL,3,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
-		(-219,-121,''hub_key'',''int'',4,10,0,NULL,2,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
-		(-218,-121,''column_key'',''int'',4,10,0,NULL,1,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
 		(-217,-120,''hub_key_column_key'',''int'',4,10,0,NULL,3,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
 		(-216,-120,''hub_key'',''int'',4,10,0,NULL,2,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
 		(-215,-120,''column_key'',''int'',4,10,0,NULL,1,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
@@ -933,13 +939,6 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		(-133,-112,''satellite_key'',''int'',4,10,0,NULL,5,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
 		(-132,-112,''satellite_col_key'',''int'',4,10,0,NULL,4,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
 		(-131,-112,''release_number'',''int'',4,10,0,NULL,3,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
-		(-129,-111,''version_number'',''int'',4,10,0,NULL,8,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
-		(-128,-111,''updated_datetime'',''datetimeoffset'',10,34,7,NULL,7,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
-		(-127,-111,''updated_by'',''varchar'',30,0,0,NULL,6,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
-		(-126,-111,''release_number'',''int'',4,10,0,NULL,5,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
-		(-125,-111,''link_key'',''int'',4,10,0,NULL,3,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
-		(-124,-111,''hub_link_key'',''int'',4,10,0,NULL,2,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
-		(-123,-111,''hub_key'',''int'',4,10,0,NULL,1,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
 		(-122,-110,''version_number'',''int'',4,10,0,NULL,8,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
 		(-121,-110,''updated_datetime'',''datetimeoffset'',10,34,7,NULL,7,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
 		(-120,-110,''updated_by'',''varchar'',30,0,0,NULL,6,NULL,NULL,0,-1,''Nov  2 2016  9:57:22.2490405PM +00:00''),
@@ -1083,9 +1082,22 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		VALUES ([satellite_col_key],[satellite_key],[column_name],[column_type],[column_length],[column_precision],[column_scale],[collation_name],[satellite_ordinal_position],[ref_function_key],[func_arguments],[func_ordinal_position],[release_key],[updated_datetime])
 	
 	;
-	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_satellite_column] OFF;', 338)
+	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_satellite_column] OFF;', 339)
 GO
-INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 13, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_column] ON; MERGE INTO [dbo].[dv_column] AS trgt USING	(VALUES (-1355,-1038,-1335,''satellite_col_key'',''int'',4,10,0,NULL,0,2,0,0,-1),
+INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 13, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_column] ON; MERGE INTO [dbo].[dv_column] AS trgt USING	(VALUES (-2375,-2041,-2353,''hub_key_column_key'',''int'',4,10,0,NULL,0,3,0,0,-1),
+		(-2374,-2041,-2354,''link_key_column_key'',''int'',4,10,0,NULL,0,2,0,0,-1),
+		(-2373,-2041,-2355,''column_key'',''int'',4,10,0,NULL,0,1,0,0,-1),
+		(-1374,-1041,-1354,''link_key'',''varchar'',30,0,0,NULL,0,2,0,0,-1),
+		(-1373,-1041,-1353,''link_key_column_key'',''varchar'',30,0,0,NULL,0,1,0,0,-1),
+		(-1372,-1040,-1352,''updated_datetime'',''datetimeoffset'',10,34,7,NULL,0,7,0,0,-1),
+		(-1371,-1040,-1351,''updated_by'',''varchar'',30,0,0,NULL,0,6,0,0,-1),
+		(-1370,-1040,-1350,''version_number'',''int'',4,10,0,NULL,0,5,0,0,-1),
+		(-1369,-1040,-1349,''release_key'',''int'',4,10,0,NULL,0,4,0,0,-1),
+		(-1368,-1040,-1348,''link_key_column_name'',''varchar'',128,0,0,NULL,0,3,0,0,-1),
+		(-1367,-1040,-1347,''link_key'',''int'',4,10,0,NULL,0,2,0,0,-1),
+		(-1366,-1040,-1346,''link_key_column_key'',''int'',4,10,0,NULL,0,1,0,0,-1),
+		(-1356,-110,-1336,''link_key_column_key'',''int'',4,10,0,NULL,0,10,0,0,-1),
+		(-1355,-1038,-1335,''satellite_col_key'',''int'',4,10,0,NULL,0,2,0,0,-1),
 		(-1354,-1038,-1334,''ref_function_key'',''int'',4,10,0,NULL,0,3,0,0,-1),
 		(-1352,-1037,-1332,''version_number'',''int'',4,10,0,NULL,0,8,0,0,-1),
 		(-1351,-1037,-1331,''updated_datetime'',''datetimeoffset'',10,34,7,NULL,0,10,0,0,-1),
@@ -1135,7 +1147,6 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		(-1306,-116,-1285,''release_key'',''int'',4,10,0,NULL,0,10,0,0,-1),
 		(-1305,-114,-1284,''release_key'',''int'',4,10,0,NULL,0,11,0,0,-1),
 		(-1304,-112,-1283,''release_key'',''int'',4,10,0,NULL,0,9,0,0,-1),
-		(-1303,-111,-1282,''release_key'',''int'',4,10,0,NULL,0,9,0,0,-1),
 		(-1302,-110,-1281,''release_key'',''int'',4,10,0,NULL,0,9,0,0,-1),
 		(-1301,-102,-1280,''release_key'',''int'',4,10,0,NULL,0,12,0,0,-1),
 		(-1300,-109,-1279,''release_key'',''int'',4,10,0,NULL,0,15,0,0,-1),
@@ -1295,10 +1306,6 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		(-249,-124,-226,''column_key'',''int'',4,10,0,NULL,0,3,0,0,-1),
 		(-245,-122,-223,''satellite_key'',''int'',4,10,0,NULL,0,2,0,0,-1),
 		(-243,-122,-222,''link_key'',''int'',4,10,0,NULL,0,3,0,0,-1),
-		(-241,-121,-221,''link_key'',''int'',4,10,0,NULL,0,5,0,0,-1),
-		(-240,-121,-220,''hub_key_column_key'',''int'',4,10,0,NULL,0,3,0,0,-1),
-		(-239,-121,-219,''hub_key'',''int'',4,10,0,NULL,0,2,0,0,-1),
-		(-238,-121,-218,''column_key'',''int'',4,10,0,NULL,0,4,0,0,-1),
 		(-236,-120,-217,''hub_key_column_key'',''int'',4,10,0,NULL,0,3,0,0,-1),
 		(-235,-120,-216,''hub_key'',''int'',4,10,0,NULL,0,2,0,0,-1),
 		(-234,-120,-215,''column_key'',''int'',4,10,0,NULL,0,4,0,0,-1),
@@ -1386,13 +1393,6 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		(-145,-112,-133,''satellite_key'',''int'',4,10,0,NULL,0,3,0,0,-1),
 		(-144,-112,-132,''satellite_col_key'',''int'',4,10,0,NULL,0,2,0,0,-1),
 		(-143,-112,-131,''release_number'',''int'',4,10,0,NULL,0,5,0,0,-1),
-		(-140,-111,-129,''version_number'',''int'',4,10,0,NULL,0,6,0,0,-1),
-		(-139,-111,-128,''updated_datetime'',''datetimeoffset'',10,34,7,NULL,0,8,0,0,-1),
-		(-138,-111,-127,''updated_by'',''varchar'',30,0,0,NULL,0,7,0,0,-1),
-		(-137,-111,-126,''release_number'',''int'',4,10,0,NULL,0,5,0,0,-1),
-		(-135,-111,-125,''link_key'',''int'',4,10,0,NULL,0,3,0,0,-1),
-		(-134,-111,-124,''hub_link_key'',''int'',4,10,0,NULL,0,2,0,0,-1),
-		(-133,-111,-123,''hub_key'',''int'',4,10,0,NULL,0,4,0,0,-1),
 		(-132,-110,-122,''version_number'',''int'',4,10,0,NULL,0,6,0,0,-1),
 		(-131,-110,-121,''updated_datetime'',''datetimeoffset'',10,34,7,NULL,0,8,0,0,-1),
 		(-130,-110,-120,''updated_by'',''varchar'',30,0,0,NULL,0,7,0,0,-1),
@@ -1446,86 +1446,86 @@ INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_
 		VALUES ([column_key],[table_key],[satellite_col_key],[column_name],[column_type],[column_length],[column_precision],[column_scale],[Collation_Name],[bk_ordinal_position],[source_ordinal_position],[is_source_date],[is_retired],[release_key])
 	
 	;
-	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_column] OFF;', 338)
+	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_column] OFF;', 339)
 GO
-INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 14, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_hub_column] ON; MERGE INTO [dbo].[dv_hub_column] AS trgt USING	(VALUES (-166,-124,-276,-1,''Nov  4 2016 12:53:17.8185789AM +00:00''),
-		(-165,-123,-272,-1,''Nov  4 2016 12:52:55.7565786AM +00:00''),
-		(-164,-122,-283,-1,''Nov  4 2016 12:36:09.0475801AM +00:00''),
-		(-163,-121,-279,-1,''Nov  4 2016 12:35:48.9565781AM +00:00''),
-		(-162,-112,-1355,-1,''Nov  2 2016 10:27:30.3699103PM +00:00''),
-		(-161,-120,-1354,-1,''Nov  2 2016 10:27:30.3699103PM +00:00''),
-		(-160,-120,-1346,-1,''Nov  2 2016 10:27:30.3699103PM +00:00''),
-		(-159,-112,-1341,-1,''Nov  2 2016  3:28:58.6311143AM +00:00''),
-		(-158,-112,-1339,-1,''Nov  2 2016  3:28:45.4596224AM +00:00''),
-		(-157,-106,-1340,-1,''Nov  2 2016  3:28:13.2418456AM +00:00''),
-		(-156,-103,-1342,-1,''Nov  2 2016  3:27:37.3991865AM +00:00''),
-		(-155,-105,-1321,-1,''Sep  9 2016  2:15:57.2236345AM +00:00''),
-		(-154,-119,-1295,-1,''Sep  7 2016  3:03:09.0982786AM +00:00''),
-		(-153,-105,-318,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-152,-109,-313,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-151,-112,-308,-1,''Nov  3 2016 12:11:39.7945259AM +00:00''),
-		(-150,-102,-305,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-149,-103,-302,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-148,-101,-297,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-147,-112,-286,-1,''Nov  2 2016 11:04:43.1074613PM +00:00''),
-		(-145,-101,-279,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-144,-102,-272,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-143,-103,-267,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-142,-118,-263,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-141,-117,-262,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-140,-105,-261,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-139,-115,-260,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-138,-114,-259,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-137,-107,-256,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-136,-108,-257,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-135,-105,-254,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-134,-108,-253,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-133,-105,-251,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-132,-106,-249,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-129,-103,-245,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-128,-102,-243,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-127,-102,-241,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-126,-109,-240,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-125,-106,-238,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-124,-101,-239,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-123,-109,-236,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-122,-106,-234,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-121,-101,-235,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-120,-103,-233,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-119,-101,-231,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-118,-118,-215,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-117,-117,-197,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-116,-116,-184,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-115,-115,-174,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-114,-114,-163,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-113,-113,-152,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-112,-112,-144,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-111,-111,-134,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-110,-110,-126,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-109,-109,-113,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-108,-108,-449,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-107,-107,-438,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-106,-106,-419,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-105,-105,-409,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-104,-104,-399,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-103,-103,-383,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-102,-102,-365,-1,''Sep  7 2016  3:02:21.5525086AM +00:00''),
-		(-101,-101,-353,-1,''Sep  7 2016  3:02:21.5525086AM +00:00'')
-			) AS src([hub_col_key],[hub_key_column_key],[column_key],[release_key],[updated_datetime])
+INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 14, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_hub_column] ON; MERGE INTO [dbo].[dv_hub_column] AS trgt USING	(VALUES (-1170,-109,-1132,-2375,-1,''Nov 24 2016  9:25:14.1366607PM +00:00''),
+		(-1169,-126,-1130,-2374,-1,''Nov 24 2016  9:02:36.2980001PM +00:00''),
+		(-1168,-106,-1131,-2373,-1,''Nov 24 2016  8:44:04.0309189PM +00:00''),
+		(-169,-102,-130,-1374,-1,''Nov 24 2016  4:16:39.4025757AM +00:00''),
+		(-168,-126,-131,-1373,-1,''Nov 24 2016  4:15:52.9661668AM +00:00''),
+		(-167,-126,NULL,-1366,-1,''Nov 24 2016  3:24:58.4141649AM +00:00''),
+		(-166,-124,NULL,-276,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-165,-123,NULL,-272,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-164,-122,NULL,-283,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-163,-121,NULL,-279,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-162,-112,-101,-1355,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-161,-120,-113,-1354,-1,''Nov 24 2016  1:43:05.6069982AM +00:00''),
+		(-160,-120,NULL,-1346,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-159,-112,-102,-1341,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-158,-112,-103,-1339,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-157,-106,-128,-1340,-1,''Nov 24 2016  2:06:23.2611291AM +00:00''),
+		(-156,-103,-129,-1342,-1,''Nov 24 2016  2:07:21.2128846AM +00:00''),
+		(-155,-105,NULL,-1321,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-154,-119,NULL,-1295,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-153,-105,NULL,-318,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-152,-109,NULL,-313,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-151,-112,NULL,-308,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-150,-102,NULL,-305,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-149,-103,NULL,-302,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-148,-101,NULL,-297,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-147,-112,NULL,-286,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-143,-103,NULL,-267,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-142,-118,-104,-263,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-141,-117,-127,-262,-1,''Nov 24 2016  2:05:23.4500976AM +00:00''),
+		(-140,-105,-105,-261,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-139,-115,-125,-260,-1,''Nov 24 2016  2:04:11.1392979AM +00:00''),
+		(-138,-114,-126,-259,-1,''Nov 24 2016  2:04:19.5453322AM +00:00''),
+		(-137,-107,-106,-256,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-136,-108,-124,-257,-1,''Nov 24 2016  2:02:39.3915090AM +00:00''),
+		(-135,-105,-107,-254,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-134,-108,-123,-253,-1,''Nov 24 2016  2:01:44.1584336AM +00:00''),
+		(-133,-105,-108,-251,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-132,-106,-122,-249,-1,''Nov 24 2016  2:00:39.2224801AM +00:00''),
+		(-129,-103,-109,-245,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-128,-102,-121,-243,-1,''Nov 24 2016  1:59:24.6461067AM +00:00''),
+		(-123,-109,-111,-236,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-122,-106,-115,-234,-1,''Nov 24 2016  1:49:39.4882268AM +00:00''),
+		(-121,-101,-117,-235,-1,''Nov 24 2016  1:54:29.7156785AM +00:00''),
+		(-120,-103,-112,-233,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-119,-101,-114,-231,-1,''Nov 24 2016  1:47:16.2572848AM +00:00''),
+		(-118,-118,NULL,-215,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-117,-117,NULL,-197,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-116,-116,NULL,-184,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-115,-115,NULL,-174,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-114,-114,NULL,-163,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-113,-113,NULL,-152,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-112,-112,NULL,-144,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-110,-110,NULL,-126,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-109,-109,NULL,-113,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-108,-108,NULL,-449,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-107,-107,NULL,-438,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-106,-106,NULL,-419,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-105,-105,NULL,-409,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-104,-104,NULL,-399,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-103,-103,NULL,-383,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-102,-102,NULL,-365,-1,''Nov 24 2016  1:38:20.5356695AM +00:00''),
+		(-101,-101,NULL,-353,-1,''Nov 24 2016  1:38:20.5356695AM +00:00'')
+			) AS src([hub_col_key],[hub_key_column_key],[link_key_column_key],[column_key],[release_key],[updated_datetime])
 	ON
 		trgt.[hub_col_key] = src.[hub_col_key]
 	WHEN MATCHED THEN
 		UPDATE SET
 			[hub_key_column_key] = src.[hub_key_column_key]
+		, [link_key_column_key] = src.[link_key_column_key]
 		, [column_key] = src.[column_key]
 		, [release_key] = src.[release_key]
 		, [updated_datetime] = src.[updated_datetime]
 	WHEN NOT MATCHED BY TARGET THEN
-		INSERT ([hub_col_key],[hub_key_column_key],[column_key],[release_key],[updated_datetime])
-		VALUES ([hub_col_key],[hub_key_column_key],[column_key],[release_key],[updated_datetime])
+		INSERT ([hub_col_key],[hub_key_column_key],[link_key_column_key],[column_key],[release_key],[updated_datetime])
+		VALUES ([hub_col_key],[hub_key_column_key],[link_key_column_key],[column_key],[release_key],[updated_datetime])
 	
 	;
-	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_hub_column] OFF;', 63)
+	 select @result = @@rowcount; SET IDENTITY_INSERT [dbo].[dv_hub_column] OFF;', 62)
 GO
 
 ---------------------------------------------------------------------------------------
@@ -1541,6 +1541,7 @@ GO
 ------------------
 --Build Hub Tables
 ------------------
+EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Link_Key_Column','N'
 EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','Link_Source_Table','N'
 EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','Hub_Source_Table','N'
 EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Reference_Function','N'
@@ -1552,7 +1553,6 @@ EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Schedule_Table','N'
 EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Schedule','N'
 EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Source_System','N'
 EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Satellite_Column','N'
-EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Hub_Link','N'
 EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Hub_Column','N'
 EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Hub_Key','N'
 EXECUTE [dbo].[dv_create_hub_table] 'ODE_Metrics_Vault','DV_Run_Manifest','N'
@@ -1576,13 +1576,16 @@ EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Run_Manifest','N'
 EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Manifest_Source','N'
 EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Column_Source','N'
 EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Link_Satellite','N'
-EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Hub_Link_Column','N'
 EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Hub_Column_Key','N'
 EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Hub_Satellite','N'
+EXECUTE [dbo].[dv_create_link_table] 'ODE_Metrics_Vault','Link_Key','N'
  
 ------------------
 --Build Sat Tables
 ------------------
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Hub_Link_Column','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Link_Key','N'
+EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Link_Key_Column','N'
 EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Satellite_Column_Function','N'
 EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Reference_Function','N'
 EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Satellite_Column_Satellite','N'
@@ -1605,7 +1608,6 @@ EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Run_Manifest','N'
 EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Manifest_Source','N'
 EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Column_Source','N'
 EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Link_Satellite','N'
-EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Hub_Link_Column','N'
 EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','Link_Hub_Column_Key','N'
 EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','log4_Severity','N'
 EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Journal','N'
@@ -1615,7 +1617,6 @@ EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Schedule_Table','N'
 EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Schedule','N'
 EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Source_System','N'
 EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Satellite_Column','N'
-EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Hub_Link','N'
 EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Hub_Column','N'
 EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Hub_Key','N'
 EXECUTE [dbo].[dv_create_sat_table] 'ODE_Metrics_Vault','DV_Run_Manifest','N'
@@ -1641,6 +1642,29 @@ CREATE SCHEMA [stage]
 
 
 GO
+PRINT N'Creating [stage].[DV_Source_Table_Raw]...';
+
+
+GO
+CREATE TABLE [stage].[DV_Source_Table_Raw] (
+    [metrics_stage_run_time]  DATETIMEOFFSET (7) NOT NULL,
+    [source_table_key]        INT                NOT NULL,
+    [system_key]              INT                NOT NULL,
+    [source_table_schema]     VARCHAR (128)      NOT NULL,
+    [source_table_name]       VARCHAR (128)      NOT NULL,
+    [source_table_load_type]  VARCHAR (50)       NOT NULL,
+    [source_procedure_schema] VARCHAR (128)      NULL,
+    [source_procedure_name]   VARCHAR (128)      NULL,
+    [is_retired]              BIT                NOT NULL,
+    [release_key]             INT                NOT NULL,
+    [release_number]          INT                NULL,
+    [version_number]          INT                NULL,
+    [updated_by]              VARCHAR (30)       NULL,
+    [update_date_time]        DATETIMEOFFSET (7) NULL
+);
+
+
+GO
 PRINT N'Creating [stage].[DV_Hub_Column]...';
 
 
@@ -1649,6 +1673,7 @@ CREATE TABLE [stage].[DV_Hub_Column] (
     [metrics_stage_run_time] DATETIMEOFFSET (7) NOT NULL,
     [hub_col_key]            INT                NOT NULL,
     [hub_key_column_key]     INT                NOT NULL,
+    [link_key_column_key]    INT                NULL,
     [column_key]             INT                NOT NULL,
     [release_key]            INT                NOT NULL,
     [release_number]         INT                NULL,
@@ -1988,24 +2013,6 @@ CREATE TABLE [stage].[DV_Hub_Key] (
 
 
 GO
-PRINT N'Creating [stage].[DV_Hub_Link]...';
-
-
-GO
-CREATE TABLE [stage].[DV_Hub_Link] (
-    [metrics_stage_run_time] DATETIMEOFFSET (7) NOT NULL,
-    [hub_link_key]           INT                NOT NULL,
-    [link_key]               INT                NOT NULL,
-    [hub_key]                INT                NOT NULL,
-    [release_key]            INT                NOT NULL,
-    [release_number]         INT                NULL,
-    [version_number]         INT                NOT NULL,
-    [updated_by]             VARCHAR (30)       NULL,
-    [updated_datetime]       DATETIMEOFFSET (7) NULL
-);
-
-
-GO
 PRINT N'Creating [stage].[DV_Journal]...';
 
 
@@ -2230,25 +2237,26 @@ CREATE TABLE [stage].[DV_Source_System] (
 
 
 GO
-PRINT N'Creating [stage].[DV_Source_Table_Raw]...';
+PRINT N'Creating [stage].[Link_Link_Satellite]...';
 
 
 GO
-CREATE TABLE [stage].[DV_Source_Table_Raw] (
-    [metrics_stage_run_time]  DATETIMEOFFSET (7) NOT NULL,
-    [source_table_key]        INT                NOT NULL,
-    [system_key]              INT                NOT NULL,
-    [source_table_schema]     VARCHAR (128)      NOT NULL,
-    [source_table_name]       VARCHAR (128)      NOT NULL,
-    [source_table_load_type]  VARCHAR (50)       NOT NULL,
-    [source_procedure_schema] VARCHAR (128)      NULL,
-    [source_procedure_name]   VARCHAR (128)      NULL,
-    [is_retired]              BIT                NOT NULL,
-    [release_key]             INT                NOT NULL,
-    [release_number]          INT                NULL,
-    [version_number]          INT                NULL,
-    [updated_by]              VARCHAR (30)       NULL,
-    [update_date_time]        DATETIMEOFFSET (7) NULL
+CREATE TABLE [stage].[Link_Link_Satellite] (
+    [metrics_stage_run_time] DATETIMEOFFSET (7) NOT NULL,
+    [satellite_key]          INT                NULL,
+    [link_key]               INT                NULL
+);
+
+
+GO
+PRINT N'Creating [stage].[Link_Manifest_Source]...';
+
+
+GO
+CREATE TABLE [stage].[Link_Manifest_Source] (
+    [metrics_stage_run_time] DATETIMEOFFSET (7) NOT NULL,
+    [source_table_key]       INT                NULL,
+    [run_manifest_key]       INT                NULL
 );
 
 
@@ -2273,6 +2281,36 @@ CREATE TABLE [stage].[log4_Severity] (
     [metrics_stage_run_time] DATETIMEOFFSET (7) NOT NULL,
     [SeverityId]             INT                NOT NULL,
     [SeverityName]           VARCHAR (128)      NOT NULL
+);
+
+
+GO
+PRINT N'Creating [stage].[DV_Link_Key_Column]...';
+
+
+GO
+CREATE TABLE [stage].[DV_Link_Key_Column] (
+    [metrics_stage_run_time] DATETIMEOFFSET (7) NOT NULL,
+    [link_key_column_key]    INT                NOT NULL,
+    [link_key]               INT                NOT NULL,
+    [link_key_column_name]   VARCHAR (128)      NULL,
+    [release_key]            INT                NOT NULL,
+    [release_number]         INT                NULL,
+    [version_number]         INT                NOT NULL,
+    [updated_by]             VARCHAR (30)       NULL,
+    [updated_datetime]       DATETIMEOFFSET (7) NULL
+);
+
+
+GO
+PRINT N'Creating [stage].[Link_Link_Key]...';
+
+
+GO
+CREATE TABLE [stage].[Link_Link_Key] (
+    [metrics_stage_run_time] DATETIMEOFFSET (7) NOT NULL,
+    [link_key_column_key]    INT                IDENTITY (1, 1) NOT NULL,
+    [link_key]               INT                NOT NULL
 );
 
 
@@ -2357,20 +2395,6 @@ CREATE TABLE [stage].[Link_Hub_Column_Key] (
 
 
 GO
-PRINT N'Creating [stage].[Link_Hub_Link_Column]...';
-
-
-GO
-CREATE TABLE [stage].[Link_Hub_Link_Column] (
-    [metrics_stage_run_time] DATETIMEOFFSET (7) NOT NULL,
-    [hub_key]                INT                NULL,
-    [hub_key_column_key]     INT                NULL,
-    [column_key]             INT                NULL,
-    [link_key]               INT                NULL
-);
-
-
-GO
 PRINT N'Creating [stage].[Link_Hub_Satellite]...';
 
 
@@ -2383,26 +2407,15 @@ CREATE TABLE [stage].[Link_Hub_Satellite] (
 
 
 GO
-PRINT N'Creating [stage].[Link_Link_Satellite]...';
+PRINT N'Creating [stage].[Link_Hub_Link_Column]...';
 
 
 GO
-CREATE TABLE [stage].[Link_Link_Satellite] (
+CREATE TABLE [stage].[Link_Hub_Link_Column] (
     [metrics_stage_run_time] DATETIMEOFFSET (7) NOT NULL,
-    [satellite_key]          INT                NULL,
-    [link_key]               INT                NULL
-);
-
-
-GO
-PRINT N'Creating [stage].[Link_Manifest_Source]...';
-
-
-GO
-CREATE TABLE [stage].[Link_Manifest_Source] (
-    [metrics_stage_run_time] DATETIMEOFFSET (7) NOT NULL,
-    [source_table_key]       INT                NULL,
-    [run_manifest_key]       INT                NULL
+    [link_key_column_key]    INT                NOT NULL,
+    [hub_key_column_key]     INT                NULL,
+    [column_key]             INT                NULL
 );
 
 
@@ -2461,6 +2474,31 @@ ALTER TABLE [stage].[SourceTable_DataDictionary]
 
 
 GO
+PRINT N'Creating [stage].[usp_Link_Hub_Satellite]...';
+
+
+GO
+CREATE PROCEDURE [stage].[usp_Link_Hub_Satellite]
+--	@LoadType varchar(128)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF (EXISTS (SELECT * 
+				FROM INFORMATION_SCHEMA.TABLES 
+				WHERE TABLE_SCHEMA = 'stage' AND TABLE_NAME = 'Link_Hub_Satellite'))
+	DROP TABLE stage.Link_Hub_Satellite;
+
+		SELECT metrics_stage_run_time = SYSDATETIMEOFFSET()
+		,satellite_key
+		, hub_key
+	INTO [stage].[Link_Hub_Satellite]
+	FROM [ODE_Metrics_Vault].[Sat].[s_DV_Satellite]
+	WHERE link_hub_satellite_flag = 'H'
+	AND [dv_row_is_current] = 1
+	AND [dv_is_tombstone] = 0
+END
+GO
 PRINT N'Creating [stage].[usp_Link_Hub_Column_Key]...';
 
 
@@ -2488,40 +2526,6 @@ BEGIN
 	FROM hHubKey k
 	JOIN sHubKey ON k.h_DV_Hub_Key_key = sHubKey.h_DV_Hub_Key_key
 	JOIN sColumn c ON c.hub_key_column_key = k.hub_key_column_key
-END
-GO
-PRINT N'Creating [stage].[usp_Link_Hub_Link_Column]...';
-
-
-GO
-
-CREATE PROCEDURE [stage].[usp_Link_Hub_Link_Column]
---	@LoadType varchar(128)
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	IF (EXISTS (SELECT * 
-				FROM INFORMATION_SCHEMA.TABLES 
-				WHERE TABLE_SCHEMA = 'stage' AND TABLE_NAME = 'Link_Hub_Link_Column'))
-	DROP TABLE stage.Link_Hub_Link_Column;
-
-	;WITH sHubKey	AS (SELECT * FROM [ODE_Metrics_Vault].[Sat].[s_DV_Hub_Key]			WHERE [dv_row_is_current] = 1	AND [dv_is_tombstone] = 0)
-	,sHubColumn		AS (SELECT * FROM [ODE_Metrics_Vault].[RawSat].[s_DV_Hub_Column]		WHERE [dv_row_is_current] = 1	AND [dv_is_tombstone] = 0)
-	,sHubLink		AS (SELECT * FROM [ODE_Metrics_Vault].[RawSat].[s_DV_Hub_Link]			WHERE [dv_row_is_current] = 1	AND [dv_is_tombstone] = 0)
-
-	SELECT metrics_stage_run_time = SYSDATETIMEOFFSET()
-		,h.hub_key
-		,h.hub_key_column_key
-		,hc.column_key 
-		,l.link_key
-	INTO [stage].[Link_Hub_Link_Column]
-	FROM sHubKey h
-	JOIN sHubColumn hc
-	ON hc.hub_key_column_key = h.hub_key_column_key
-	JOIN sHubLink l
-	ON h.hub_key = l.hub_key
-	
 END
 GO
 PRINT N'Creating [stage].[usp_Link_Link_Satellite]...';
@@ -3118,6 +3122,7 @@ BEGIN
 	SELECT metrics_stage_run_time = SYSDATETIMEOFFSET()
 		,c.[hub_col_key]
 		,c.[hub_key_column_key]
+		,c.link_key_column_key
 		,c.[column_key]
 		,c.[release_key]
 		,m.[release_number]
@@ -3128,36 +3133,6 @@ BEGIN
 	FROM [$(ODE_Config)].[dbo].[dv_hub_column] c
 	LEFT JOIN [$(ODE_Config)].[dv_release].[dv_release_master] m
 	ON c.release_key = m.release_key
-END
-GO
-PRINT N'Creating [stage].[usp_DV_Hub_Link]...';
-
-
-GO
-CREATE PROCEDURE [stage].[usp_DV_Hub_Link]
---	@LoadType varchar(128)
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	IF (EXISTS (SELECT * 
-				FROM INFORMATION_SCHEMA.TABLES 
-				WHERE TABLE_SCHEMA = 'stage' AND TABLE_NAME = 'DV_Hub_Link'))
-	DROP TABLE stage.DV_Hub_Link;
-
-	SELECT metrics_stage_run_time = SYSDATETIMEOFFSET()
-		,l.[hub_link_key]
-		,l.[link_key]
-		,l.[hub_key]
-		,l.[release_key]
-		,m.[release_number]
-		,l.[version_number]
-		,l.[updated_by]
-		,l.[updated_datetime]
-	INTO [stage].[DV_Hub_Link]
-	FROM [$(ODE_Config)].[dbo].[dv_hub_link] l
-	LEFT JOIN [$(ODE_Config)].[dv_release].[dv_release_master] m
-	ON l.release_key = m.release_key
 END
 GO
 PRINT N'Creating [stage].[usp_DV_Satellite_Column]...';
@@ -3409,11 +3384,11 @@ BEGIN
 	ON j.JournalId = jd.JournalId
 END
 GO
-PRINT N'Creating [stage].[usp_Link_Hub_Satellite]...';
+PRINT N'Creating [stage].[usp_DV_Link_Key_Column]...';
 
 
 GO
-CREATE PROCEDURE [stage].[usp_Link_Hub_Satellite]
+CREATE PROCEDURE [stage].[usp_DV_Link_Key_Column]
 --	@LoadType varchar(128)
 AS
 BEGIN
@@ -3421,17 +3396,45 @@ BEGIN
 
 	IF (EXISTS (SELECT * 
 				FROM INFORMATION_SCHEMA.TABLES 
-				WHERE TABLE_SCHEMA = 'stage' AND TABLE_NAME = 'Link_Hub_Satellite'))
-	DROP TABLE stage.Link_Hub_Satellite;
+				WHERE TABLE_SCHEMA = 'stage' AND TABLE_NAME = 'DV_Link_Key_Column'))
+	DROP TABLE stage.DV_Link_Key_Column;
 
-		SELECT metrics_stage_run_time = SYSDATETIMEOFFSET()
-		,satellite_key
-		, hub_key
-	INTO [stage].[Link_Hub_Satellite]
-	FROM [ODE_Metrics_Vault].[Sat].[s_DV_Satellite]
-	WHERE link_hub_satellite_flag = 'H'
-	AND [dv_row_is_current] = 1
-	AND [dv_is_tombstone] = 0
+	SELECT metrics_stage_run_time = SYSDATETIMEOFFSET()
+		,l.[link_key_column_key]
+		,l.[link_key]
+		,l.[link_key_column_name]
+		,l.[release_key]
+		,m.[release_number]
+		,l.[version_number]
+		,l.[updated_by]
+		,l.[updated_datetime]
+	INTO [stage].[DV_Link_Key_Column]
+	FROM [$(ODE_Config)].[dbo].[DV_Link_Key_Column] l
+	LEFT JOIN [$(ODE_Config)].[dv_release].[dv_release_master] m
+	ON l.release_key = m.release_key
+END
+GO
+PRINT N'Creating [stage].[usp_Link_Link_Key]...';
+
+
+GO
+CREATE PROCEDURE [stage].[usp_Link_Link_Key]
+--	@LoadType varchar(128)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF (EXISTS (SELECT * 
+				FROM INFORMATION_SCHEMA.TABLES 
+				WHERE TABLE_SCHEMA = 'stage' AND TABLE_NAME = 'Link_Link_Key'))
+	DROP TABLE stage.Link_Link_Key;
+
+	SELECT metrics_stage_run_time = SYSDATETIMEOFFSET()
+		,[link_key_column_key]
+		,link_key
+	INTO [stage].[Link_Link_Key]
+	FROM [ODE_Config].[dbo].[dv_link_key_column]
+
 END
 GO
 PRINT N'Creating [stage].[usp_Link_Satellite_Column_Function]...';
@@ -3571,6 +3574,35 @@ BEGIN
 	INTO [stage].[log4_Severity]
 	FROM [$(ODE_Config)].[log4].[Severity] s
 
+END
+GO
+PRINT N'Creating [stage].[usp_Link_Hub_Link_Column]...';
+
+
+GO
+CREATE PROCEDURE [stage].[usp_Link_Hub_Link_Column]
+--	@LoadType varchar(128)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF (EXISTS (SELECT * 
+				FROM INFORMATION_SCHEMA.TABLES 
+				WHERE TABLE_SCHEMA = 'stage' AND TABLE_NAME = 'Link_Hub_Link_Column'))
+	DROP TABLE stage.Link_Hub_Link_Column;
+
+	with hHC	AS (SELECT * FROM [ODE_Metrics_Vault].[RawHub].[h_DV_Hub_Column])
+	, sHC		AS (SELECT * FROM [ODE_Metrics_Vault].[RawSat].[s_DV_Hub_Column]
+					WHERE [dv_row_is_current] = 1 AND [dv_is_tombstone] =0)
+
+	SELECT DISTINCT metrics_stage_run_time = SYSDATETIMEOFFSET()
+		,ISNULL(sHC.[link_key_column_key],-999999) [link_key_column_key]
+		,sHC.[hub_key_column_key]
+		,sHC.[column_key]
+	INTO [stage].[Link_Hub_Link_Column]
+	FROM hHC
+	JOIN sHC
+	ON hHC.h_DV_Hub_Column_key = sHC.h_DV_Hub_Column_key
 END
 GO
 DECLARE @VarDecimalSupported AS BIT;
