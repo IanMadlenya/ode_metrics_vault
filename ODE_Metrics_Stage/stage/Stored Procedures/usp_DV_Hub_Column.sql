@@ -12,6 +12,7 @@ BEGIN
 	SELECT metrics_stage_run_time = SYSDATETIMEOFFSET()
 		,c.[hub_col_key]
 		,c.[hub_key_column_key]
+		,c.link_key_column_key
 		,c.[column_key]
 		,c.[release_key]
 		,m.[release_number]

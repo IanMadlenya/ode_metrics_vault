@@ -67,7 +67,6 @@
   <ItemGroup>
     <Build Include="stage\Tables\DV_Link.sql" />
     <Build Include="stage\Tables\DV_Journal.sql" />
-    <Build Include="stage\Tables\DV_Hub_Link.sql" />
     <Build Include="stage\Tables\DV_Hub_Key.sql" />
     <Build Include="stage\Tables\DV_Hub.sql" />
     <Build Include="stage\Tables\DV_Exception.sql" />
@@ -117,7 +116,6 @@
     <Build Include="stage\Stored Procedures\usp_DV_Schedule.sql" />
     <Build Include="stage\Stored Procedures\usp_DV_Source_System.sql" />
     <Build Include="stage\Stored Procedures\usp_DV_Satellite_Column.sql" />
-    <Build Include="stage\Stored Procedures\usp_DV_Hub_Link.sql" />
     <Build Include="stage\Stored Procedures\usp_DV_Hub_Column.sql" />
     <Build Include="stage\Stored Procedures\usp_DV_Hub_Key.sql" />
     <Build Include="stage\Stored Procedures\usp_DV_Run_Manifest.sql" />
@@ -146,6 +144,10 @@
     <Build Include="stage\Stored Procedures\usp_DV_Reference_Function.sql" />
     <Build Include="stage\Tables\Link_Satellite_Column_Function.sql" />
     <Build Include="stage\Stored Procedures\usp_Link_Satellite_Column_Function.sql" />
+    <Build Include="stage\Tables\Link_Link_Key.sql" />
+    <Build Include="stage\Tables\DV_Link_Key_Column.sql" />
+    <Build Include="stage\Stored Procedures\usp_Link_Link_Key.sql" />
+    <Build Include="stage\Stored Procedures\usp_DV_Link_Key_Column.sql" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="ODE_Config">
