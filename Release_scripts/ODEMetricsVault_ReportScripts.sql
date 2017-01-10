@@ -120,66 +120,65 @@ GO
 CREATE VIEW [dbo].[vw_DD_Links]
 AS
 
-WITH hLink	AS (SELECT * FROM [ODE_Metrics_Vault].[hub].[h_DV_Link])
-,sLink		AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_DV_Link]  WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0)
-,sLinkInt	AS (SELECT LinkKey, SUM(TotalRowCount) AS TotalRowCount FROM [ODE_Metrics_Vault].[sat].[s_Link_Integrity] WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0
-				GROUP BY LinkKey)
-,sDDLink	AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_Link_DataDictionary] WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0)
-,sHubInt	AS (SELECT HubKey, SUM(TotalRowCount) AS TotalRowCount FROM [ODE_Metrics_Vault].[sat].[s_Hub_Integrity] WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0
-				GROUP BY HubKey)
-,hRank		AS (SELECT distinct h_DV_Link_key, h.h_DV_Hub_key, h.[hub_name], i.[TotalRowCount],
-					DENSE_RANK () OVER(PARTITION BY h_DV_Link_key ORDER BY h_DV_Link_key,l.h_DV_Hub_key ) AS RankRank
-				FROM [ODE_Metrics_Vault].[lnk].[l_Hub_Link_Column] l
-				JOIN [ODE_Metrics_Vault].[sat].[s_Link_Hub_Link_Column] s ON l.l_Hub_Link_Column_key = s.l_Hub_Link_Column_key
-				LEFT JOIN [ODE_Metrics_Vault].[sat].[s_DV_Hub] h  ON l.h_DV_Hub_key = h.h_DV_Hub_key
-				LEFT JOIN sHubInt i ON s.Hub_key = i.Hubkey
-				WHERE s.dv_row_is_current = 1 AND s.dv_is_tombstone = 0
-					AND h.dv_row_is_current = 1 AND h.dv_is_tombstone = 0)
-
-SELECT DISTINCT hLink.link_key	AS LinkKey
-, sLink.link_name		AS LinkName
+WITH hLink   AS (SELECT * FROM [ODE_Metrics_Vault].[hub].[h_DV_Link])
+,sLink       AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_DV_Link]  WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0)
+,sLinkInt    AS (SELECT LinkKey, SUM(TotalRowCount) AS TotalRowCount FROM [ODE_Metrics_Vault].[sat].[s_Link_Integrity] WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0
+                           GROUP BY LinkKey)
+,sDDLink     AS (SELECT * FROM [ODE_Metrics_Vault].[sat].[s_Link_DataDictionary] WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0)
+,sHubInt     AS (SELECT HubKey, SUM(TotalRowCount) AS TotalRowCount FROM [ODE_Metrics_Vault].[sat].[s_Hub_Integrity] WHERE [dv_row_is_current] = 1 and [dv_is_tombstone] = 0
+                           GROUP BY HubKey)
+,hRank       AS (select distinct t1.h_DV_Link_key, t3.h_DV_Hub_key, t4.hub_name, t5.TotalRowCount,
+                           DENSE_RANK () OVER (PARTITION BY t1.h_DV_Link_key ORDER BY t1.h_DV_Link_key, t3.h_DV_Hub_key ) AS RankRank
+                           from [lnk].[l_Link_Key] t1
+                           join [lnk].[l_Hub_Link_Column] t2 on t1.h_DV_Link_Key_Column_key = t2.h_DV_Link_Key_Column_key
+                           join [lnk].[l_Hub_Column_Key] t3 on t2.h_DV_Hub_Key_key = t3.h_DV_Hub_Key_key
+                           join [sat].[s_DV_Hub] t4 on t3.h_DV_Hub_key = t4.h_DV_Hub_key
+                           left join sHubInt t5 on t4.hub_key = t5.Hubkey
+                          where t4.dv_row_is_current = 1 and t4.dv_is_tombstone = 0)
+ 
+SELECT DISTINCT hLink.link_key   AS LinkKey
+, sLink.link_name          AS LinkName
 , sDDLink.[Description] AS LinkShortDesc
-, sDDLink.BusinessRule	AS LinkLongDesc
+, sDDLink.BusinessRule     AS LinkLongDesc
 , CASE WHEN sLink.is_retired = 0 THEN 'Current' ELSE 'Retired' END AS LinkCurrentFlag
 , sLinkInt.TotalRowCount AS LinkRowCount
-, h1.hub_name			AS Hub1Name
-, h1.TotalRowCount		AS Hub1RowCount
-, h2.hub_name			AS Hub2Name
-, h2.TotalRowCount		AS Hub2RowCount
-, h3.hub_name			AS Hub3Name
-, h3.TotalRowCount		AS Hub3RowCount
-, h4.hub_name			AS Hub4Name
-, h4.TotalRowCount		AS Hub4RowCount
-, h5.hub_name			AS Hub5Name
-, h5.TotalRowCount		AS Hub5RowCount
-, h6.hub_name			AS Hub6Name
-, h6.TotalRowCount		AS Hub6RowCount
+, h1.hub_name              AS Hub1Name
+, h1.TotalRowCount         AS Hub1RowCount
+, h2.hub_name              AS Hub2Name
+, h2.TotalRowCount         AS Hub2RowCount
+, h3.hub_name              AS Hub3Name
+, h3.TotalRowCount         AS Hub3RowCount
+, h4.hub_name              AS Hub4Name
+, h4.TotalRowCount         AS Hub4RowCount
+, h5.hub_name              AS Hub5Name
+, h5.TotalRowCount         AS Hub5RowCount
+, h6.hub_name              AS Hub6Name
+, h6.TotalRowCount         AS Hub6RowCount
 FROM hLink
 LEFT JOIN hRank h1
-	ON hLink.h_DV_Link_key = h1.h_DV_Link_key
-	AND h1.RankRank = 1
+       ON hLink.h_DV_Link_key = h1.h_DV_Link_key
+       AND h1.RankRank = 1
 LEFT JOIN hRank h2
-	ON hLink.h_DV_Link_key = h2.h_DV_Link_key
-	AND h2.RankRank = 2
+       ON hLink.h_DV_Link_key = h2.h_DV_Link_key
+       AND h2.RankRank = 2
 LEFT JOIN hRank h3
-	ON hLink.h_DV_Link_key = h3.h_DV_Link_key
-	AND h3.RankRank = 3
+       ON hLink.h_DV_Link_key = h3.h_DV_Link_key
+       AND h3.RankRank = 3
 LEFT JOIN hRank h4
-	ON hLink.h_DV_Link_key = h4.h_DV_Link_key
-	AND h4.RankRank = 4
+       ON hLink.h_DV_Link_key = h4.h_DV_Link_key
+       AND h4.RankRank = 4
 LEFT JOIN hRank h5
-	ON hLink.h_DV_Link_key = h5.h_DV_Link_key
-	AND h5.RankRank = 5
+       ON hLink.h_DV_Link_key = h5.h_DV_Link_key
+       AND h5.RankRank = 5
 LEFT JOIN hRank h6
-	ON hLink.h_DV_Link_key = h6.h_DV_Link_key
-	AND h6.RankRank = 6
+       ON hLink.h_DV_Link_key = h6.h_DV_Link_key
+       AND h6.RankRank = 6
 LEFT JOIN sLink
-	ON hLink.h_DV_Link_key = sLink.h_DV_Link_key
+       ON hLink.h_DV_Link_key = sLink.h_DV_Link_key
 LEFT JOIN sLinkInt
-	ON hLink.link_key = sLinkInt.LinkKey
+       ON hLink.link_key = sLinkInt.LinkKey
 LEFT JOIN sDDLink
-	ON hLink.h_DV_Link_key = sDDLink.h_DV_Link_key
-
+       ON hLink.h_DV_Link_key = sDDLink.h_DV_Link_key
 GO
 
 
