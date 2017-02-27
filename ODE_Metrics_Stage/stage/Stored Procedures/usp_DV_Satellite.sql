@@ -21,6 +21,7 @@ BEGIN
 		,s.[satellite_database]
 		,s.[duplicate_removal_threshold]
 		,s.[is_columnstore]
+		,s.[is_compressed]
 		,s.[is_retired]
 		,s.[release_key]
 		,m.[release_number]

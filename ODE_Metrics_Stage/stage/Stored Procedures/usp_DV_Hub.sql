@@ -20,6 +20,7 @@ BEGIN
 		,h.[hub_schema]
 		,h.[hub_database]
 		,h.[is_retired]
+		,h.[is_compressed]
 		,h.[release_key]
 		,m.[release_number]
 		,h.[version_number]

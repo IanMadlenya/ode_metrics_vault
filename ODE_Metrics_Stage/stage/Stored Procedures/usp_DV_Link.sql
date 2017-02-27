@@ -16,6 +16,7 @@ BEGIN
 		,l.[link_abbreviation]
 		,l.[link_schema]
 		,l.[link_database]
+		,l.[is_compressed]
 		,l.[is_retired]
 		,l.[release_key]
 		,m.[release_number]

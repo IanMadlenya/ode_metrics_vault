@@ -12,7 +12,6 @@ BEGIN
 	SELECT metrics_stage_run_time = SYSDATETIMEOFFSET()
 		,s.[source_system_key]
 		,s.[source_system_name]
-		,s.[timevault_name]
 		,s.[is_retired]
 		,s.[release_key]
 		,m.[release_number]

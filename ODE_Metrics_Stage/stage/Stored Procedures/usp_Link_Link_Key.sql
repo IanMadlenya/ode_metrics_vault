@@ -13,6 +13,6 @@ BEGIN
 		,[link_key_column_key]
 		,link_key
 	INTO [stage].[Link_Link_Key]
-	FROM [ODE_Config].[dbo].[dv_link_key_column]
+	FROM [$(ODE_Config)].[dbo].[dv_link_key_column]
 
 END

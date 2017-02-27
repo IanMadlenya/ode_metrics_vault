@@ -10,6 +10,7 @@
     [satellite_database]          VARCHAR (128)      NOT NULL,
     [duplicate_removal_threshold] INT                NOT NULL,
     [is_columnstore]              BIT                NOT NULL,
+    [is_compressed]               BIT                NOT NULL,
     [is_retired]                  BIT                NOT NULL,
     [release_key]                 INT                NOT NULL,
     [release_number]              INT                NULL,
@@ -17,4 +18,6 @@
     [updated_by]                  VARCHAR (30)       NULL,
     [updated_datetime]            DATETIMEOFFSET (7) NULL
 );
+
+
 

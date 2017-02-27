@@ -478,20 +478,19 @@ GO
 
   CREATE VIEW [dbo].[vw_Satellite_Row_Increase]
   AS
+   WITH prev as ( select [s_Satellite_Integrity_key]
+   ,  PreviousTotalRowCount = LAG([TotalRowCount]) over (partition by [SatelliteKey] order by [dv_rowstartdate])
+   ,  PreviousCurrentRowCount = LAG(CurrentRowCount) OVER (Partition by [SatelliteKey] order by [dv_rowstartdate])
+    FROM [ODE_Metrics_Vault].[sat].[s_Satellite_Integrity]
+	)
   SELECT curnt.RunDate
   , DATENAME(dw,curnt.RunDate) AS DayOfWeek
   , curnt.[SatelliteName]
   , curnt.CurrentRowCount, curnt.[TotalRowCount]
-  , curnt.CurrentRowCount - prev.CurrentRowCount AS RowsAddedSinceLastRun
+  , curnt.TotalRowCount - prev.PreviousTotalRowCount AS TotalRowsAddedSinceLastRun
+  , curnt.CurrentRowCount - prev.PreviousCurrentRowCount AS CurrentRowsAddedSinceLastRun
   FROM [ODE_Metrics_Vault].[sat].[s_Satellite_Integrity] curnt
-  LEFT JOIN [ODE_Metrics_Vault].[sat].[s_Satellite_Integrity] prev
-			ON curnt.SatelliteKey = prev.SatelliteKey
-			AND curnt.RunDate > prev.RunDate
-			AND NOT EXISTS 
-			(SELECT SatelliteKey FROM [ODE_Metrics_Vault].[sat].[s_Satellite_Integrity] subQuer
-			WHERE subQuer.SatelliteKey = curnt.SatelliteKey 
-				AND curnt.RunDate > subQuer.RunDate
-				AND prev.RunDate < subQuer.RunDate)
+  LEFT JOIN prev ON curnt.s_Satellite_Integrity_key = prev.s_Satellite_Integrity_key
 
 GO
 

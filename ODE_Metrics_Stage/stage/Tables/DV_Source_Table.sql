@@ -4,18 +4,17 @@
     [source_system_key]            INT                NULL,
     [source_system_is_retired]     BIT                NULL,
     [source_system_name]           VARCHAR (50)       NULL,
-    [timevault_name]               VARCHAR (50)       NULL,
     [source_system_release_key]    INT                NULL,
     [source_system_release_number] INT                NULL,
     [source_table_schema]          VARCHAR (128)      NULL,
     [source_table_name]            VARCHAR (128)      NULL,
     [source_table_load_type]       VARCHAR (50)       NULL,
-    [source_procedure_schema]      VARCHAR (128)      NULL,
-    [source_procedure_name]        VARCHAR (128)      NULL,
     [is_retired]                   BIT                NULL,
     [release_key]                  INT                NULL,
     [release_number]               INT                NULL,
     [updated_by]                   VARCHAR (30)       NULL,
     [update_date_time]             DATETIMEOFFSET (7) NULL
 );
+
+
 
