@@ -52,18 +52,30 @@ GO
 USE [$(ODE_Config)]
 GO
 
---Set up a release number
-
-SET IDENTITY_INSERT [dv_release].[dv_release_master] ON 
-
-GO
-INSERT [dv_release].[dv_release_master] ([release_key], [release_number], [release_description], [reference_number], [reference_source], [build_number], [build_date], [build_server], [release_built_by], [release_start_datetime], [release_complete_datetime], [release_count], [version_number], [updated_by], [updated_datetime]) VALUES (-1, 1, N'Metrics vault settings', N'N/A', N'N/A', 1, CAST(N'2016-09-09T03:45:11.0406345+00:00' AS DateTimeOffset), NULL, N'dbo', NULL, NULL, 0, 1, N'sa', CAST(N'2016-09-09T03:45:11.0436349+00:00' AS DateTimeOffset))
-GO
-
-SET IDENTITY_INSERT [dv_release].[dv_release_master] OFF
-GO
-
 --Insert data to the release build table
+
+INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 1, 1, N'Header', N'SET IDENTITY_INSERT [dv_release].[dv_release_master] ON; MERGE INTO [dv_release].[dv_release_master] AS trgt USING	(VALUES (-1,1,''Metrics vault settings'',''N/A'',''N/A'',9,''Nov 24 2016  9:59:38.0813818PM +00:00'',''PC111'',''dbo'',''Nov 24 2016  9:59:38.0813818PM +00:00'')
+			) AS src([release_key],[release_number],[release_description],[reference_number],[reference_source],[build_number],[build_date],[build_server],[release_built_by],[updated_datetime])
+	ON
+		trgt.[release_key] = src.[release_key]
+	WHEN MATCHED THEN
+		UPDATE SET
+			[release_number] = src.[release_number]
+		, [release_description] = src.[release_description]
+		, [reference_number] = src.[reference_number]
+		, [reference_source] = src.[reference_source]
+		, [build_number] = src.[build_number]
+		, [build_date] = src.[build_date]
+		, [build_server] = src.[build_server]
+		, [release_built_by] = src.[release_built_by]
+		, [updated_datetime] = src.[updated_datetime]
+	WHEN NOT MATCHED BY TARGET THEN
+		INSERT ([release_key],[release_number],[release_description],[reference_number],[reference_source],[build_number],[build_date],[build_server],[release_built_by],[updated_datetime])
+		VALUES ([release_key],[release_number],[release_description],[reference_number],[reference_source],[build_number],[build_date],[build_server],[release_built_by],[updated_datetime])
+	
+	;
+	 select @result = @@rowcount; SET IDENTITY_INSERT [dv_release].[dv_release_master] OFF;', 1)
+GO
 INSERT [dv_release].[dv_release_build] ([release_build_key], [release_statement_sequence], [release_number], [release_statement_type], [release_statement], [affected_row_count]) VALUES (-1, 2, 1, N'Table', N'SET IDENTITY_INSERT [dbo].[dv_source_system] ON; MERGE INTO [dbo].[dv_source_system] AS trgt USING	(VALUES (-101,''MetricsVault'',0,-1)
 			) AS src([source_system_key],[source_system_name],[is_retired],[release_key])
 	ON
